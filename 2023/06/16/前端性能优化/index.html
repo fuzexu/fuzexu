@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="付泽旭">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/2023/06/16/前端性能优化/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="前端性能优化总结前言性能优化总结：减少请求次数、减小资源大小、提高响应和加载速度、优化资源加载时机、优化加载方式。 性能分类对前端工程性能的优化，我觉得可以分为两类：  站在用户视角的主观的可感知的性能。 站在开发者视角的可客观度量的性能。  感知性能对于用户来说，用户的感知性能才是最重要的，简单讲，就是让用户感觉你的网站访问很快，并且感知性能没有衡量标准。 不过，凡事总有例外，如果一个页面的加载">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端性能优化">
+<meta property="og:url" content="http://example.com/2023/06/16/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/index.html">
+<meta property="og:site_name" content="枫叶苑">
+<meta property="og:description" content="前端性能优化总结前言性能优化总结：减少请求次数、减小资源大小、提高响应和加载速度、优化资源加载时机、优化加载方式。 性能分类对前端工程性能的优化，我觉得可以分为两类：  站在用户视角的主观的可感知的性能。 站在开发者视角的可客观度量的性能。  感知性能对于用户来说，用户的感知性能才是最重要的，简单讲，就是让用户感觉你的网站访问很快，并且感知性能没有衡量标准。 不过，凡事总有例外，如果一个页面的加载">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/20/172d09f7c0c4afeb~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/20/172d09f7c39e62c5~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/17/172c164286ca09bd~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/17/172c060f69f1c1f4~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/17/172c061440cf617f~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/19/172cb8dda68617da~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/19/172cb8fa40b13ff3~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/20/172cf7463cd4cf71~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png">
+<meta property="article:published_time" content="2023-06-16T03:29:00.000Z">
+<meta property="article:modified_time" content="2023-08-16T03:56:05.705Z">
+<meta property="article:author" content="枫叶">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="Gulp">
+<meta property="article:tag" content="浏览器">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/20/172d09f7c0c4afeb~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/MZLP.ico" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/MZLP.ico">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/MZLP.ico">
+    <!--- Page Info-->
+    
+    <title>
+        
+            前端性能优化 -
+        
+        博客
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/assets/fonts.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    let Global = window.Global || {};
+    Global.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN","path":"search.xml"};
+    Global.theme_config = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"busuanzi_counter":{"enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"pjax":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"付泽旭的博客","subtitle":{"text":["随机抽取一段文字1/3","随机抽取一段文字2/3","随机抽取一段文字3/3"],"hitokoto":{"enable":true,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"Imagine","artist":"John Lennon","url":"https://evan.beee.top/music/Imagine%20-%20John%20Lennon.mp3","cover":"https://evan.beee.top/music/covers/Lennon_Imagine_Sleeve_1975.jpg"}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.1.5","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"fuzexu.com","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Status":{"path":"https://status.evanluo.top/","icon":"fa-regular fa-chart-bar"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/EvanNotFound/hexo-theme-redefine","Blog":"https://ohevan.com","Friends":"/friends"}},"相册":{"icon":"fa-solid fa-image","path":"/masonry/"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"info","announcement":"欢迎来到付泽旭的博客","links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}}};
+    Global.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    Global.data_config = {"masonry":true};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="main-content-container">
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                博客
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/fuzexu.com"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        首页
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        归档
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    target="_blank" rel="noopener" href="https://status.evanluo.top/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-chart-bar"></i>
+                                        
+                                        状态
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        关于&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">ME
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/EvanNotFound/hexo-theme-redefine">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://ohevan.com">BLOG
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a href="/friends">友情链接
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/masonry/"  >
+                                    
+                                        
+                                            <i class="fa-solid fa-image"></i>
+                                        
+                                        相册
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i></div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer">
+        <ul class="drawer-navbar-list">
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/fuzexu.com"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                首页
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                归档
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        target="_blank" rel="noopener" href="https://status.evanluo.top/"  >
+                             
+                                
+                                    <i class="fa-regular fa-chart-bar"></i>
+                                
+                                状态
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                关于&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="dropdown-item flex-center">
+                                <a class="dropdown-item" href="/about">ME</a>
+                            </li>
+                        
+                            <li class="dropdown-item flex-center">
+                                <a class="dropdown-item" target="_blank" rel="noopener" href="https://github.com/EvanNotFound/hexo-theme-redefine">GITHUB</a>
+                            </li>
+                        
+                            <li class="dropdown-item flex-center">
+                                <a class="dropdown-item" target="_blank" rel="noopener" href="https://ohevan.com">BLOG</a>
+                            </li>
+                        
+                            <li class="dropdown-item flex-center">
+                                <a class="dropdown-item" href="/friends">友情链接</a>
+                            </li>
+                        
+                    
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/masonry/"  >
+                             
+                                
+                                    <i class="fa-solid fa-image"></i>
+                                
+                                相册
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container">
+        <div class="article-content-container">
+
+            
+            
+                <div class="article-title">
+                    <h1 class="article-title-regular">前端性能优化</h1>
+                </div>
+            
+                
+            
+
+            
+                <div class="article-header">
+                    <div class="avatar">
+                        <img src="/images/MZL.svg">
+                    </div>
+                    <div class="info">
+                        <div class="author">
+                            <span class="name">付泽旭</span>
+                            
+                                <span class="author-label">Lv2</span>
+                            
+                        </div>
+                        <div class="meta-info">
+                            <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-06-16 11:29</span>
+        <span class="mobile">2023-06-16 11:29</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-08-16 11:56:05</span>
+            <span class="mobile">2023-08-16 11:56</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/JavaScript/">JavaScript</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E5%89%8D%E7%AB%AF/">前端</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Gulp/">Gulp</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>2.7k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>10 分钟</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="article-content markdown-body">
+                <h1 id="前端性能优化总结"><a href="#前端性能优化总结" class="headerlink" title="前端性能优化总结"></a>前端性能优化总结</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>性能优化总结：减少请求次数、减小资源大小、提高响应和加载速度、优化资源加载时机、优化加载方式。</strong></p>
+<h2 id="性能分类"><a href="#性能分类" class="headerlink" title="性能分类"></a>性能分类</h2><p>对前端工程性能的优化，我觉得可以分为两类：</p>
+<ul>
+<li>站在用户视角的主观的可感知的性能。</li>
+<li>站在开发者视角的可客观度量的性能。</li>
+</ul>
+<h3 id="感知性能"><a href="#感知性能" class="headerlink" title="感知性能"></a>感知性能</h3><p>对于用户来说，用户的感知性能才是最重要的，简单讲，就是让用户感觉你的网站访问很快，并且感知性能没有衡量标准。</p>
+<p>不过，凡事总有例外，如果一个页面的加载时间就会很长，我们也可以通过一些方式让用户觉得没有那么慢。</p>
+<p><strong>总之一句话，你的页面可以做的不快，但是你可以让你的用户觉得你很快。</strong></p>
+<h3 id="客观性能"><a href="#客观性能" class="headerlink" title="客观性能"></a>客观性能</h3><p>对于开发者来说，性能指标是可以客观度量的，我们可以通过一些手段来优化 Web 性能，使这些度量指标达到开发者设定的标准。</p>
+<p>客观性能是指，从用户输入url开始，到下载、解析和执行所有资源以及最终绘制的整个过程的时间度量。</p>
+<p><strong>性能指标是个很复杂的标准，后续我会单独整理出一篇文章介绍性能指标。</strong></p>
+<h2 id="构建优化"><a href="#构建优化" class="headerlink" title="构建优化"></a>构建优化</h2><p>*<em>由于我司使用的是 <em>@vue&#x2F;cli</em>，所以许多webpack配置脚手架已经帮你完成了，我就不叙述了，这里只讲基于 <em>@vue&#x2F;cli</em> 做的一些优化配置</em>*</p>
+<h3 id="gzip-压缩"><a href="#gzip-压缩" class="headerlink" title="gzip 压缩"></a>gzip 压缩</h3><p><code>gzip</code> 压缩效率非常高，通常可以达到 70% 的压缩率，也就是说，如果你的网页有 30K，压缩之后就变成了 9K 左右。</p>
+<p><code>//npm i -D compression-webpack-plugin configureWebpack: config =&gt; &#123;   const CompressionPlugin = require(&#39;compression-webpack-plugin&#39;)   config.plugins.push(new CompressionPlugin()) &#125;</code></p>
+<h3 id="去除-console-log"><a href="#去除-console-log" class="headerlink" title="去除 console.log"></a>去除 console.log</h3><p>线上项目自然不应该被看到控制台的打印日志,所以我们需要将 <code>console.log</code> 都去除掉。</p>
+<p>复制代码</p>
+<p><code>//npm i -D terser-webpack-plugin   configureWebpack: config =&gt; &#123;    const TerserPlugin = require(&#39;terser-webpack-plugin&#39;)    config.optimization.minimizer.push(      new TerserPlugin(&#123;        extractComments: false,        terserOptions: &#123; compress: &#123; drop_console: true &#125; &#125;,      &#125;)    )  &#125;</code></p>
+<h3 id="去除-SourceMap"><a href="#去除-SourceMap" class="headerlink" title="去除 SourceMap"></a>去除 SourceMap</h3><p>由于打包后的文件经过了压缩、合并、混淆、babel编译后的代码不利于定位分析bug。</p>
+<p>复制代码</p>
+<p><code>module.exports = &#123;   productionSourceMap: false, &#125;</code></p>
+<h3 id="CDN减少打包体积"><a href="#CDN减少打包体积" class="headerlink" title="CDN减少打包体积"></a>CDN减少打包体积</h3><p>使用 <code>cdn</code> 文件来减少工程到打包体积，也可以按需加载。</p>
+<p>在 &#x2F;public&#x2F;index.html 中引入需要的js和css文件</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/20/172d09f7c0c4afeb~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"
+                     
+                ></p>
+<p>去掉 package.json 中对于 vue、element-ui 等相关资源的依赖</p>
+<p>src&#x2F;main.js ，去掉 vue、element-ui 等相关资源的 import 和 vue.use 这些语句</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/20/172d09f7c39e62c5~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"
+                     
+                ></p>
+<p>配置externals。由于使用 Vue Cli 3 默认配置，新建出来的项目没有了 build 目录，首先得在项目根目录下，新建 vue.config.js 文件，里面添加以下代码：</p>
+<p>复制代码</p>
+<p><code>module.exports = &#123;     configureWebpack:&#123;         externals:&#123;             &#39;Vue&#39;: &#39;Vue&#39;,             &#39;element-ui&#39;: &#39;element-ui&#39;,             &#39;clipboard&#39;:&#39;VueClipboard&#39;         &#125;     &#125; &#125;</code></p>
+<h3 id="预渲染"><a href="#预渲染" class="headerlink" title="预渲染"></a>预渲染</h3><blockquote>
+<p>渲染方式分为三种，客户端渲染，服务端渲染，预渲染。</p>
+</blockquote>
+<p>我们默认的开发方式是通过客户端渲染，但是客户端渲染页面内容，关键链路较长，首屏渲染会有一定延迟，并且对 <em>SEO</em> 非常不友好，对于C端的产品来说，是不可行的。</p>
+<p>所以很多公司都会通过服务端渲染（SSR）或是 预渲染的方式来解决这两点问题，由于公司技术栈原因，我们采用预渲染的方式来做优化。</p>
+<blockquote>
+<p>什么是预渲染？</p>
+</blockquote>
+<p>简单说，就是将浏览器解析 <code>javascript</code> 动态渲染页面的这部分工作，在打包阶段就完成了，（只构建了静态数据）换个说法在构建过程中，<code>webpack</code> 通过使用 <code>prerender-spa-plugin</code> 插件生成静态结构的 <code>html</code>。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// npm i -D prerender-spa-plugin</span></span><br><span class="line"> <span class="attr">configureWebpack</span>: <span class="function"><span class="params">config</span> =&gt;</span> &#123;</span><br><span class="line">   <span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line">   <span class="keyword">const</span> <span class="title class_">PrerenderSPAPlugin</span> = <span class="built_in">require</span>(<span class="string">&#x27;prerender-spa-plugin&#x27;</span>)</span><br><span class="line">   config.<span class="property">plugins</span>.<span class="title function_">push</span>(</span><br><span class="line">     <span class="keyword">new</span> <span class="title class_">PrerenderSPAPlugin</span>(&#123;</span><br><span class="line">       <span class="attr">staticDir</span>: path.<span class="title function_">join</span>(__dirname, <span class="string">&#x27;dist&#x27;</span>),</span><br><span class="line">       <span class="attr">routes</span>: [<span class="string">&#x27;/&#x27;</span>],</span><br><span class="line">       <span class="attr">minify</span>: &#123;</span><br><span class="line">         <span class="attr">collapseBooleanAttributes</span>: <span class="literal">true</span>,</span><br><span class="line">         <span class="attr">collapseWhitespace</span>: <span class="literal">true</span>,</span><br><span class="line">         <span class="attr">keepClosingSlash</span>: <span class="literal">true</span>,</span><br><span class="line">         <span class="attr">decodeEntities</span>: <span class="literal">true</span>,</span><br><span class="line">         <span class="attr">sortAttributes</span>: <span class="literal">true</span>,</span><br><span class="line">       &#125;,</span><br><span class="line">       <span class="attr">renderer</span>: <span class="keyword">new</span> <span class="title class_">PrerenderSPAPlugin</span>.<span class="title class_">PuppeteerRenderer</span>(&#123;</span><br><span class="line">         <span class="attr">renderAfterDocumentEvent</span>: <span class="string">&#x27;render-event&#x27;</span>,</span><br><span class="line">         <span class="attr">renderAfterTime</span>: <span class="number">5000</span>,</span><br><span class="line">         <span class="comment">// headless: false,</span></span><br><span class="line">       &#125;),</span><br><span class="line">     &#125;)</span><br><span class="line">   )</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">作者：海洋里的魔鬼鱼</span><br><span class="line">链接：<span class="attr">https</span>:<span class="comment">//juejin.cn/post/6844904195707895816</span></span><br><span class="line">来源：稀土掘金</span><br><span class="line">著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>注意：路由模式必须为 <code>history</code> ，如果不设置 <code>history</code> 模式，也能运行和生成文件，每个 <code>index.html</code> 文件的内容都会是一样的。</strong></p>
+<h2 id="网络资源优化"><a href="#网络资源优化" class="headerlink" title="网络资源优化"></a>网络资源优化</h2><h3 id="Service-Worker"><a href="#Service-Worker" class="headerlink" title="Service Worker"></a>Service Worker</h3><p><code>ServiceWorker</code> 是运行在浏览器后台进程里的一段 JS，它可以做许多事情，比如拦截客户端的请求、向客户端发送消息、向服务器发起请求等等，其中最重要的作用之一就是离线资源缓存。</p>
+<p><code>ServiceWorker</code> 拥有对缓存流程丰富灵活的控制能力，当页面请求到 <code>ServiceWorker</code> 时，<code>ServiceWorker</code> 同时请求缓存和网络，把缓存的内容直接给用户，而后覆盖缓存，我司已经使用了 <code>ServiceWorker</code> 替换 <code>HTTP缓存策略</code>。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/17/172c164286ca09bd~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"
+                     
+                ></p>
+<p><strong>注意：需要HTTPS才可以使用 ServiceWorker</strong></p>
+<h3 id="http缓存"><a href="#http缓存" class="headerlink" title="http缓存"></a>http缓存</h3><p>HTTP 缓存一般分为两类：<strong>强缓存（也称本地缓存）</strong> 和 <strong>协商缓存（也称304缓存）</strong>。</p>
+<p>普通刷新会启用 <strong>协商缓存</strong>，忽略 <strong>强缓存</strong>。只有在地址栏或收藏夹输入网址、通过链接引用资源等情况下，浏览器才会启用 <strong>强缓存</strong>。</p>
+<h4 id="强缓存（200）"><a href="#强缓存（200）" class="headerlink" title="强缓存（200）"></a>强缓存（200）</h4><p>本地缓存是最快速的一种缓存方式，只要资源还在缓存有效期内，浏览器就会直接在本地读取，不会请求服务端。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/17/172c060f69f1c1f4~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"
+                     
+                ></p>
+<h4 id="协商缓存（304）"><a href="#协商缓存（304）" class="headerlink" title="协商缓存（304）"></a>协商缓存（304）</h4><p>协商缓存，顾名思义是经过浏览器与服务器之间协商过之后，在决定是否读取本地缓存，如果服务器通知浏览器可以读取本地缓存，会返回304状态码，并且协商过程很简单，只会发送头信息，不会发送响应体。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/17/172c061440cf617f~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"
+                     
+                ></p>
+<h4 id="缓存位置"><a href="#缓存位置" class="headerlink" title="缓存位置"></a>缓存位置</h4><p>缓存位置一般分为：Memory Cache（内存缓存）和 Disk Cache（硬盘缓存）</p>
+<p>内存缓存：读取快、持续时间短、容量小</p>
+<p>硬盘缓存：读取慢、持续时间长、容量大</p>
+<h4 id="缓存优先级"><a href="#缓存优先级" class="headerlink" title="缓存优先级"></a>缓存优先级</h4><p>Service Worker -&gt; Memory Cache -&gt; Disk Cache -&gt; Push Cache</p>
+<h3 id="HTTP2"><a href="#HTTP2" class="headerlink" title="HTTP2"></a>HTTP2</h3><p>HTTP2 四个新特性：</p>
+<ul>
+<li>多路复用，无需多个TCP连接，因为其允许在单一的HTTP2连接上发起多重请求，因此可以不用依赖建立多个TCP连接。</li>
+<li>二进制分帧，将所有要传输的消息采用二进制编码，并且会将信息分割为更小的消息块。</li>
+<li>头部压缩，用HPACK技术压缩头部，减小报文大小</li>
+<li>服务端推送，服务端可以在客户端发起请求前发送数据，换句话说，服务端可以对客户端的一个请求发送多个相应，并且资源可以正常缓存。</li>
+</ul>
+<p>复制代码</p>
+<p><code>server &#123;     listen 443 ssl http2; &#125;</code></p>
+<p><strong>注意：使用 http2 的前提是必须是 https。</strong></p>
+<h3 id="资源预加载"><a href="#资源预加载" class="headerlink" title="资源预加载"></a>资源预加载</h3><p>简单说，提前加载资源，当用户需要查看时可直接从本地缓存中渲染。</p>
+<p><strong>总结：对当前页面需要的资源，使用 preload 进行预加载，对其它页面需要的资源进行 prefetch 预加载。</strong></p>
+<h4 id="preload"><a href="#preload" class="headerlink" title="preload"></a>preload</h4><p><code>preload</code> 页面加载的过程中，在浏览器开始主体渲染之前加载。</p>
+<p>复制代码</p>
+<p><code>&lt;!-- 对sty1e.cs5和 index.js进行pre1oad预加载 --&gt; &lt;link rel=&quot;preload&quot; href=&quot;style.css&quot; as=&quot;style&quot;&gt; &lt;link rel=&quot;preload&quot; href=&quot;index.js&quot; as=&quot;script&quot;&gt;</code></p>
+<h4 id="prefetch"><a href="#prefetch" class="headerlink" title="prefetch"></a>prefetch</h4><p><code>prefetch</code> 页面加载完成后，利用空闲时间提前加载。</p>
+<p>复制代码</p>
+<p><code>&lt;!--对资源进行 prefetch预加载--&gt; &lt;link rel=&quot;prefetch&quot; href=&quot;next.css&quot;&gt; &lt;link rel=&quot;prefetch&quot; href=&quot;next.js&quot;&gt;</code></p>
+<p>注意：<code>vue-cli</code> 默认开启 <code>prefetch</code> ，可在 <code>vue.config.js</code> 中全局禁用 <code>prefetch</code> ，再针对指定模块开启。</p>
+<p>复制代码</p>
+<p><code>chainWebpack: config =&gt; &#123;   config.plugins.delete(&#39;prefetch&#39;) &#125;</code></p>
+<h4 id="dns-prefetch"><a href="#dns-prefetch" class="headerlink" title="dns-prefetch"></a>dns-prefetch</h4><p>页面加载完成后，利用空闲时间提前加载。</p>
+<p>复制代码</p>
+<p><code>&lt;link rel=&quot;dns-prefetch&quot; href=&quot;//example.com&quot;&gt;</code></p>
+<h3 id="异步无阻塞加载JS"><a href="#异步无阻塞加载JS" class="headerlink" title="异步无阻塞加载JS"></a>异步无阻塞加载JS</h3><p>异步加载 js 文件，并且不会阻塞页面的渲染。</p>
+<p>先来看一个普通的 script 标签解析过程。</p>
+<p>复制代码</p>
+<p><code>&lt;script src=&quot;a.js&quot; &gt;&lt;/script&gt;</code></p>
+<ol>
+<li>停止解析 document.</li>
+<li>请求 a.js</li>
+<li>执行 a.js 中的脚本</li>
+<li>继续解析 document</li>
+</ol>
+<h4 id="defer"><a href="#defer" class="headerlink" title="defer"></a>defer</h4><p>复制代码</p>
+<p><code>&lt;script src=&quot;d.js&quot; defer&gt;&lt;/script&gt; &lt;script src=&quot;e.js&quot; defer&gt;&lt;/script&gt;</code></p>
+<ol>
+<li>不阻止解析 document， 并行下载 d.js, e.js</li>
+<li>即使下载完 d.js, e.js 仍继续解析 document</li>
+<li>按照页面中出现的顺序，在其他同步脚本执行后，DOMContentLoaded 事件前 依次执行 d.js, e.js。</li>
+</ol>
+<h4 id="async"><a href="#async" class="headerlink" title="async"></a>async</h4><p>复制代码</p>
+<p><code>&lt;script src=&quot;b.js&quot; async&gt;&lt;/script&gt; &lt;script src=&quot;c.js&quot; async&gt;&lt;/script&gt;</code></p>
+<ol>
+<li>不阻止解析 document, 并行下载 b.js, c.js</li>
+<li>当脚本下载完后立即执行。（两者执行顺序不确定，执行阶段不确定，可能在 DOMContentLoaded 事件前或者后 ）</li>
+</ol>
+<h3 id="webp"><a href="#webp" class="headerlink" title="webp"></a>webp</h3><p><strong>webp</strong> 是一种新的图片格式，它的体积只有只有 <strong>JPEG</strong> 的2&#x2F;3，将图片资源大量换成 <strong>webp</strong> 格式可以加快请求的速度。</p>
+<p>我司的图片资源大部分都放在阿里的 <strong>OSS</strong> 上，并且阿里提供了接口，可以在线将 <strong>png&#x2F;jpeg</strong> 转为 <strong>webp</strong> 格式。</p>
+<p><strong>注意：webp 格式在浏览器兼容上还有一定的问题，所以需要判断浏览器是否支持 webp 格式哦。</strong></p>
+<p>复制代码</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">check_webp_feature</span>(<span class="params">feature, callback</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> kTestImages = &#123;</span><br><span class="line">    <span class="attr">lossy</span>: <span class="string">&#x27;UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA&#x27;</span>,</span><br><span class="line">    <span class="attr">lossless</span>: <span class="string">&#x27;UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==&#x27;</span>,</span><br><span class="line">    <span class="attr">alpha</span>:</span><br><span class="line">      <span class="string">&#x27;UklGRkoAAABXRUJQVlA4WAoAAAAQAAAAAAAAAAAAQUxQSAwAAAARBxAR/Q9ERP8DAABWUDggGAAAABQBAJ0BKgEAAQAAAP4AAA3AAP7mtQAAAA==&#x27;</span>,</span><br><span class="line">    <span class="attr">animation</span>:</span><br><span class="line">      <span class="string">&#x27;UklGRlIAAABXRUJQVlA4WAoAAAASAAAAAAAAAAAAQU5JTQYAAAD/////AABBTk1GJgAAAAAAAAAAAAAAAAAAAGQAAABWUDhMDQAAAC8AAAAQBxAREYiI/gcA&#x27;</span>,</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">var</span> img = <span class="keyword">new</span> <span class="title class_">Image</span>();</span><br><span class="line">  img.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> result = img.<span class="property">width</span> &gt; <span class="number">0</span> &amp;&amp; img.<span class="property">height</span> &gt; <span class="number">0</span>;</span><br><span class="line">    <span class="title function_">callback</span>(feature, result);</span><br><span class="line">  &#125;;</span><br><span class="line">  img.<span class="property">onerror</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">callback</span>(feature, <span class="literal">false</span>);</span><br><span class="line">  &#125;;</span><br><span class="line">  img.<span class="property">src</span> = <span class="string">&#x27;data:image/webp;base64,&#x27;</span> + kTestImages[feature];</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>感知性能优化</p>
+<p>loading 加载</p>
+<p>江湖人称菊花图 ….</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/19/172cb8dda68617da~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"
+                     
+                ></p>
+<p>不过，现在对于加载的设计体验有了比菊花加载体验更棒的方法 。</p>
+<h3 id="骨架屏"><a href="#骨架屏" class="headerlink" title="骨架屏"></a>骨架屏</h3><p>骨架屏可以带来更好的用户体验，有很强的加载感。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/19/172cb8fa40b13ff3~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"
+                     
+                ></p>
+<p>可惜的是，<strong>ElementUI</strong> 并没有提供骨架屏组件，反观 <strong>Antd</strong> ，真香…</p>
+<h3 id="对比体验"><a href="#对比体验" class="headerlink" title="对比体验"></a>对比体验</h3><p>第一个为骨架屏，第二个为菊花图，第三个为无优化，可以看到相比于传统的菊花图会在感官上觉得内容出现的流畅而不突兀，体验更加优良。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/20/172cf7463cd4cf71~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"
+                      alt="img"
+                ></p>
+<link rel="stylesheet" href="main.css"/>
+
+            </div>
+
+            
+                <div class="post-copyright-info">
+                    <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> 前端性能优化</li>
+        <li><strong>作者:</strong> 付泽旭</li>
+        <li><strong>创建于:</strong> 2023-06-16 11:29:00</li>
+        
+            <li>
+                <strong>更新于:</strong> 2023-08-16 11:56:05
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://fuzexu.com/2023/06/16/前端性能优化/
+        </li>
+        <li>
+            <strong>版权声明:</strong> 本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a> 进行许可。
+        </li>
+    </ul>
+</div>
+
+                </div>
+            
+
+            
+                <ul class="post-tags-box">
+                    
+                        <li class="tag-item">
+                            <a href="/tags/JavaScript/">#JavaScript</a>&nbsp;
+                        </li>
+                    
+                        <li class="tag-item">
+                            <a href="/tags/%E5%89%8D%E7%AB%AF/">#前端</a>&nbsp;
+                        </li>
+                    
+                        <li class="tag-item">
+                            <a href="/tags/Gulp/">#Gulp</a>&nbsp;
+                        </li>
+                    
+                        <li class="tag-item">
+                            <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/">#浏览器</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            
+
+            
+
+            
+                <div class="article-nav">
+                    
+                        <div class="article-prev">
+                            <a class="prev"
+                            rel="prev"
+                            href="/2023/06/16/git%20%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/"
+                            >
+                                <span class="left arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-left"></i>
+                                </span>
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">git常见命令整理</span>
+                                    <span class="post-nav-item">上一篇</span>
+                                </span>
+                            </a>
+                        </div>
+                    
+                    
+                        <div class="article-next">
+                            <a class="next"
+                            rel="next"
+                            href="/2023/06/16/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E8%9E%8D%E5%85%A5%E5%9B%A2%E9%98%9F/"
+                            >
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">如何快速融入团队</span>
+                                    <span class="post-nav-item">下一篇</span>
+                                </span>
+                                <span class="right arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </span>
+                            </a>
+                        </div>
+                    
+                </div>
+            
+
+
+            
+                <div class="comment-container">
+                    <div class="comments-container">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fa-solid fa-comments"></i>&nbsp;评论
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-pjax
+            src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+    <script data-pjax>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: '92e35342f0e3ea900049',
+                    clientSecret: 'b457ca0c8eb16a3b9a264b9d76262ae47f3c65cb',
+                    repo: 'Redefine',
+                    owner: '137082109',
+                    admin: ['137082109'],
+                    id: __gitalk__pathname,
+                    language: 'zh-CN'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+                </div>
+            
+        </div>
+
+        
+            <div class="toc-content-container">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">前端性能优化</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%BB%E7%BB%93"><span class="nav-text">前端性能优化总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E5%88%86%E7%B1%BB"><span class="nav-text">性能分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%84%9F%E7%9F%A5%E6%80%A7%E8%83%BD"><span class="nav-text">感知性能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%A2%E8%A7%82%E6%80%A7%E8%83%BD"><span class="nav-text">客观性能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E4%BC%98%E5%8C%96"><span class="nav-text">构建优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gzip-%E5%8E%8B%E7%BC%A9"><span class="nav-text">gzip 压缩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%BB%E9%99%A4-console-log"><span class="nav-text">去除 console.log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%BB%E9%99%A4-SourceMap"><span class="nav-text">去除 SourceMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CDN%E5%87%8F%E5%B0%91%E6%89%93%E5%8C%85%E4%BD%93%E7%A7%AF"><span class="nav-text">CDN减少打包体积</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E6%B8%B2%E6%9F%93"><span class="nav-text">预渲染</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E8%B5%84%E6%BA%90%E4%BC%98%E5%8C%96"><span class="nav-text">网络资源优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Service-Worker"><span class="nav-text">Service Worker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#http%E7%BC%93%E5%AD%98"><span class="nav-text">http缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP2"><span class="nav-text">HTTP2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E9%A2%84%E5%8A%A0%E8%BD%BD"><span class="nav-text">资源预加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E6%97%A0%E9%98%BB%E5%A1%9E%E5%8A%A0%E8%BD%BDJS"><span class="nav-text">异步无阻塞加载JS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#webp"><span class="nav-text">webp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AA%A8%E6%9E%B6%E5%B1%8F"><span class="nav-text">骨架屏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E6%AF%94%E4%BD%93%E9%AA%8C"><span class="nav-text">对比体验</span></a></li></ol></li></ol></li></ol>
+
+    </div>
+</div>
+            </div>
+        
+    </div>
+</div>
+
+
+                
+
+            </div>
+            
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2023&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">付泽旭</a>
+        </div>
+        
+            <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                    <span id="busuanzi_container_site_uv" class="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv" class="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv" class="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            <span class="powered-by-container">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a> 驱动</span>
+                <br>
+            <span class="theme-version-container">主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.1.5</a>
+        </div>
+        
+        
+        
+            <div id="start_div" style="display:none">
+                2020/6/17 10:45:14
+            </div>
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+        
+            <script async data-pjax>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-expand-width flex-center">
+            <i class="fa-regular fa-expand"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/layouts/navbarShrink.js"></script>
+
+<script src="/js/tools/scrollTopBottom.js"></script>
+
+<script src="/js/tools/lightDarkSwitch.js"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js"></script>
+
+
+
+
+
+
+    
+<script src="/js/libs/minimasonry.min.js"></script>
+
+    
+<script src="/js/plugins/masonry.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/tools/tocToggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/layouts/toc.js"></script>
+
+<script src="/js/plugins/tabs.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax',
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            Global.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            Global.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            Global.refresh();
+        });
+    });
+</script>
+
+
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>

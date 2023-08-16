@@ -1,0 +1,1229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>HTML 转 Markdown</title>
+    <url>/2023/06/16/HTML%20%E8%BD%AC%20Markdown/</url>
+    <content><![CDATA[<h2 id="如何将文章将保存为-markdown-？"><a href="#如何将文章将保存为-markdown-？" class="headerlink" title="如何将文章将保存为 markdown ？"></a>如何将文章将保存为 markdown ？</h2><p>下面推荐 2 个工具非常好用可以将直接将 HTML 转为 markdown，大家可以收藏使用</p>
+<ul>
+<li><a class="link"   href="https://link.juejin.cn/?target=https://devtool.tech/html-md"  title="https://devtool.tech/html-md">devtool.tech&#x2F;html-md <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link"   href="https://link.juejin.cn/?target=https://www.helloworld.net/html2md"  title="https://www.helloworld.net/html2md">www.helloworld.net/html2md <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ffa39e9b9166475abddfbfd1bc955b5d~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp"
+                      alt="s17085102232022"
+                ></p>
+<p>其实 devtool.tech 里面的每个工具都挺好用的。</p>
+<h2 id="HTML-转-markdown-是如何实现？"><a href="#HTML-转-markdown-是如何实现？" class="headerlink" title="HTML 转 markdown 是如何实现？"></a>HTML 转 markdown 是如何实现？</h2><p>其实有个包 <a class="link"   href="https://link.juejin.cn/?target=https://github.com/mixmark-io/turndown"  title="https://github.com/mixmark-io/turndown">turndown <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 可以直接将 html 转为 markdown，并且可以在浏览器和 nodejs 中执行</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>npm</p>
+<p><code>npm install turndown</code></p>
+<p>浏览器 </p>
+<p><code>&lt;script src=&quot;https://unpkg.com/turndown/dist/turndown.js&quot;&gt;&lt;/script&gt;</code></p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p><code>var TurndownService = require(&#39;turndown&#39;) var turndownService = new TurndownService() var markdown = turndownService.turndown(&#39;&lt;h1&gt;Hello world!&lt;/h1&gt;&#39;)</code></p>
+<p>直接将 html 字符串传入就可以了，返回 markdown 字符串</p>
+<p>turndown 还支持配置规则， 比如</p>
+<p><strong>保留标签</strong></p>
+<p><code>turndownService.keep([&#39;del&#39;, &#39;ins&#39;]) turndownService.turndown(&#39;&lt;p&gt;Hello &lt;del&gt;world&lt;/del&gt;&lt;ins&gt;World&lt;/ins&gt;&lt;/p&gt;&#39;) // &#39;Hello &lt;del&gt;world&lt;/del&gt;&lt;ins&gt;World&lt;/ins&gt;&#39;</code></p>
+<p><strong>移除标签</strong></p>
+<p><code>turndownService.remove(&#39;del&#39;) turndownService.turndown(&#39;&lt;p&gt;Hello &lt;del&gt;world&lt;/del&gt;&lt;ins&gt;World&lt;/ins&gt;&lt;/p&gt;&#39;) // &#39;Hello World&#39;</code></p>
+<h2 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h2><p>turndown 还支持插件的使用，官方就提供了 <code>turndown-plugin-gfm</code>,意思是 GitHub Flavored Markdown 功能是特点有：</p>
+<ul>
+<li>strikethrough 支持 <code>&lt;strike&gt;</code>, <code>&lt;s&gt;</code>, 和 <code>&lt;del&gt;</code> 标签，也就是删除线</li>
+<li>tables 支持表格</li>
+<li>taskListItems 支持任务列表，也就是 checkbox 任务</li>
+</ul>
+<p>使用代码</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="title class_">TurndownService</span> = <span class="built_in">require</span>(<span class="string">&#x27;turndown&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> turndownPluginGfm = <span class="built_in">require</span>(<span class="string">&#x27;turndown-plugin-gfm&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> gfm = turndownPluginGfm.<span class="property">gfm</span></span><br><span class="line"><span class="keyword">var</span> turndownService = <span class="keyword">new</span> <span class="title class_">TurndownService</span>()</span><br><span class="line">turndownService.<span class="title function_">use</span>(gfm)</span><br><span class="line"><span class="keyword">var</span> markdown = turndownService.<span class="title function_">turndown</span>(<span class="string">&#x27;&lt;strike&gt;Hello world!&lt;/strike&gt;&#x27;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>一般都要加上这个插件</p>
+<h2 id="开发一个类似的工具"><a href="#开发一个类似的工具" class="headerlink" title="开发一个类似的工具"></a>开发一个类似的工具</h2><p>其实使用 turndown 已经完成类似的功能，为了美观，我们可以给代码加上代码编辑器 <a class="link"   href="https://link.juejin.cn/?target=https://codemirror.net/6/"  title="https://codemirror.net/6/">codemirror <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>新的 codemirror6 完全重写，采用了插件化的形式，代码量更小，我用的技术栈是 react， 社区封装了一个好用的库 <a class="link"   href="https://link.juejin.cn/?target=https://www.npmjs.com/package/rodemirror"  title="https://www.npmjs.com/package/rodemirror">rodemirror <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<p>使用代码示例</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useMemo, useState &#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">CodeMirror</span> <span class="keyword">from</span> <span class="string">&quot;rodemirror&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; basicSetup &#125; <span class="keyword">from</span> <span class="string">&quot;@codemirror/basic-setup&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; oneDark &#125; <span class="keyword">from</span> <span class="string">&quot;@codemirror/theme-one-dark&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; javascript &#125; <span class="keyword">from</span> <span class="string">&quot;@codemirror/lang-javascript&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; markdown <span class="keyword">as</span> langMarkdown &#125; <span class="keyword">from</span> <span class="string">&quot;@codemirror/lang-markdown&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">Editor</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> extensions = <span class="title function_">useMemo</span>(<span class="function">() =&gt;</span> [basicSetup, oneDark, <span class="title function_">javascript</span>(),<span class="title function_">langMarkdown</span>()], []);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> defaultValue = <span class="string">&quot;console.log(&#x27;Hello world!&#x27;)&quot;</span>;</span><br><span class="line">  <span class="comment">// remove if you do not need the value</span></span><br><span class="line">  <span class="keyword">const</span> [value, setValue] = <span class="title function_">useState</span>(defaultValue);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">CodeMirror</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">      <span class="attr">value</span>=<span class="string">&#123;defaultValue&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">      <span class="attr">onUpdate</span>=<span class="string">&#123;(v)</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-xml">        if (v.docChanged) &#123;</span></span><br><span class="line"><span class="language-xml">          setValue(v.state.doc.toString());</span></span><br><span class="line"><span class="language-xml">        &#125;</span></span><br><span class="line"><span class="language-xml">      &#125;&#125;</span></span><br><span class="line"><span class="language-xml">      extensions=&#123;extensions&#125;</span></span><br><span class="line"><span class="language-xml">    /&gt;</span></span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">Editor</span>;</span><br></pre></td></tr></table></figure></div>
+
+<p>lang-javascript 下的包是让 CodeMirror 支持语法高亮。接下来就是配合react 常规写法。效果如下</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fd603109cc644d9fbecfd1a5ae0c477b~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp"
+                      alt="image.png"
+                ></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cb6480e922aa45ac96dcfdf7420bd8fd~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp"
+                      alt="image.png"
+                ></p>
+<p>一个简易版的 html 转 markdown 编辑器就实现了，大家可以手动尝试实现一下。本文未涉及这些工具的内部实现原理，后续若遇到问题需要深入研究。</p>
+]]></content>
+      <tags>
+        <tag>HTML</tag>
+        <tag>Markdown</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vue开发命名规范</title>
+    <url>/2023/06/16/Vue%20%E5%BC%80%E5%8F%91%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83/</url>
+    <content><![CDATA[<h3 id="一、views-命名"><a href="#一、views-命名" class="headerlink" title="一、views 命名"></a>一、views 命名</h3><p>views 文件夹下面是由 以页面为单位的 vue 文件或者模块文件夹 组成的，放在 src 目录之下，与 components、assets 同级。</p>
+<h3 id="二、views-下的文件名命名"><a href="#二、views-下的文件名命名" class="headerlink" title="二、views 下的文件名命名"></a>二、views 下的文件名命名</h3><ol>
+<li>views 下面的文件夹代表着模块的名字</li>
+<li>由名词组成（car、order、cart）</li>
+<li>单词只能有一个（good: car order cart）（bad: carInfo carpage）</li>
+<li>尽量是名词（good: car）（bad: greet good）</li>
+<li>以小写开头（good: car）（bad: Car）</li>
+</ol>
+<h3 id="三、views-下的-vue-文件命名"><a href="#三、views-下的-vue-文件命名" class="headerlink" title="三、views 下的 vue 文件命名"></a>三、views 下的 vue 文件命名</h3><ol>
+<li>views 下面的 vue 文件代表着页面的名字</li>
+<li>放在模块文件夹之下</li>
+<li>只有一个文件的情况下不会出现文件夹，而是直接放在 views 目录下面，如 Login Home</li>
+<li>尽量是名词</li>
+<li>大写开头，开头的单词就是所属模块名字（CarDetail、CarEdit、CarList）</li>
+<li>名字至少两个单词（good: CarDetail）（bad: Car）</li>
+<li>常用结尾单词有（Detail、Edit、List、Info、Report）</li>
+<li>以 Item 结尾的代表着组件（CarListItem、CarInfoItem）</li>
+</ol>
+<h3 id="四、vue-方法放置顺序"><a href="#四、vue-方法放置顺序" class="headerlink" title="四、vue 方法放置顺序"></a>四、vue 方法放置顺序</h3><ol>
+<li>filters</li>
+<li>components</li>
+<li>props</li>
+<li>data</li>
+<li>created</li>
+<li>computed</li>
+<li>watch</li>
+<li>mounted</li>
+<li>activited</li>
+<li>update</li>
+<li>beforeRouteUpdate</li>
+<li>methods</li>
+</ol>
+<h3 id="五、method-自定义方法命名"><a href="#五、method-自定义方法命名" class="headerlink" title="五、method 自定义方法命名"></a>五、method 自定义方法命名</h3><ol>
+<li>动宾短语（good：jumpPage、openCarInfoDialog）（bad：go、nextPage、show、open、login）</li>
+<li>ajax 方法以 get、post 开头，以 data 结尾（good：getListData、postFormData）（bad：takeData、confirmData、getList、postForm）</li>
+<li>事件方法以 on 开头（onTypeChange、onUsernameInput）</li>
+<li>init、refresh 单词除外</li>
+<li>尽量使用常用单词开头（set、get、open、close、jump）</li>
+<li>驼峰命名（good: getListData）（bad: get_list_data、getlistData）</li>
+</ol>
+<h3 id="六、data-props-方法注意点"><a href="#六、data-props-方法注意点" class="headerlink" title="六、data props 方法注意点"></a>六、data props 方法注意点</h3><ol>
+<li>使用 data 里的变量时请先在 data 里面初始化</li>
+<li>props 指定类型，也就是 type</li>
+<li>props 改变父组件数据 基础类型用 $emit ，复杂类型直接改</li>
+<li>ajax 请求数据用上 isLoading、isError 变量</li>
+<li>不命名多余数据，现在是详情页、你的数据是 ajax 请求的，那就直接声明一个对象叫 d，而不是每个字段都声明</li>
+<li>表单数据请包裹一层 form</li>
+</ol>
+<h3 id="七、生命周期方法注意点"><a href="#七、生命周期方法注意点" class="headerlink" title="七、生命周期方法注意点"></a>七、生命周期方法注意点</h3><ol>
+<li>不在 mounted、created 之类的方法写逻辑，取 ajax 数据，</li>
+<li>在 created 里面监听 Bus 事件</li>
+</ol>
+<p>例：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">src:</span><br><span class="line">    assets</span><br><span class="line">        ...</span><br><span class="line">    components</span><br><span class="line">        ...</span><br><span class="line">    views</span><br><span class="line">        car</span><br><span class="line">            CarEdit.vue</span><br><span class="line">            CarList.vue</span><br><span class="line">            CarDetai.vue</span><br><span class="line">        user</span><br><span class="line">            UserDetail.vue</span><br><span class="line">            UserEdit.vue</span><br><span class="line">            UserPasswordRest.vue</span><br><span class="line">        customer</span><br><span class="line">            CustomerCardItem.vue</span><br><span class="line">            CustomerList.vue</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// CarList.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">        &lt;ul&gt;</span><br><span class="line">            &lt;li v-for=&quot;car in carList&quot; :key=&quot;car.id&quot;&gt;</span><br><span class="line">                &lt;img src=&quot;car.logo&quot; alt=&quot;&quot;&gt;</span><br><span class="line">                &lt;p&gt;&#123;&#123;car.name | empty&#125;&#125;&lt;/p&gt;</span><br><span class="line">            &lt;/li&gt;</span><br><span class="line">        &lt;/ul&gt;</span><br><span class="line">        &lt;button @click=&quot;loadNextPage&quot;&gt;下一页&lt;/button&gt;</span><br><span class="line">        &lt;div class=&quot;last&quot; v-show=&quot;isLast&quot;&gt;已经没有更多了...&lt;/div&gt;</span><br><span class="line">        &lt;div class=&quot;loading&quot; v-show=&quot;isLoading&quot;&gt;正在加载...&lt;/div&gt;</span><br><span class="line">        &lt;div class=&quot;error&quot; v-show=&quot;isError&quot; @click=&quot;getCarListData&quot;&gt;加载错误，点击 &lt;span class=&quot;font-blue&quot;&gt;这里&lt;/span&gt; 重试&lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">    export default &#123;</span><br><span class="line">        data() &#123;</span><br><span class="line">            return &#123;</span><br><span class="line">                carList: [],</span><br><span class="line">                totalPage: 1, // 总页数</span><br><span class="line">                page: 0, // 当前页数</span><br><span class="line">                isLoading: false, // 是否正在加载</span><br><span class="line">                isError: false // 是否加载错误</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        mounted() &#123;</span><br><span class="line">            this.loadNextPage();</span><br><span class="line">        &#125;,</span><br><span class="line">        methods: &#123;</span><br><span class="line">            // 获取列表数据</span><br><span class="line">            getCarListData() &#123;</span><br><span class="line">                let data = &#123;</span><br><span class="line">                    page: this.page, // 当前页数</span><br><span class="line">                    pageSize: 10 // 每页条数 </span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                this.isLoading = true;</span><br><span class="line">                this.isError = false;</span><br><span class="line">                this.$ajaxGet(&#x27;/car/list&#x27;, data).then(data =&gt; &#123;</span><br><span class="line">                    // 加载成功</span><br><span class="line">                    this.carList.concat(data.list);</span><br><span class="line">                    this.page = data.page;</span><br><span class="line">                    this.totalPage = data.totalPage</span><br><span class="line">        </span><br><span class="line">                    this.isLoading = false;</span><br><span class="line">                &#125;).catch(() =&gt; &#123;</span><br><span class="line">                     //  加载列表失败</span><br><span class="line">                    this.isLoading = false;</span><br><span class="line">                    this.isError = true;</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;,</span><br><span class="line">            // 下一页</span><br><span class="line">            loadNextPage() &#123;</span><br><span class="line">                if(this.page &lt;= this.totalPage) &#123;</span><br><span class="line">                    this.page ++;</span><br><span class="line">                    this.getCarListData();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        filters: &#123;</span><br><span class="line">            empty(value) &#123;</span><br><span class="line">                return value || &#x27;未知&#x27;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        computed: &#123;</span><br><span class="line">            // 是否是最后一条</span><br><span class="line">            isLast() &#123;</span><br><span class="line">                return !this.isLoading &amp;&amp; this.carList.length &gt; 10 &amp;&amp; !this.isError &amp;&amp; this.page &gt;= this.totalPage;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></div>
+]]></content>
+      <tags>
+        <tag>vue</tag>
+        <tag>命名规范</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>代码整洁之道</title>
+    <url>/2023/06/16/%E4%BB%A3%E7%A0%81%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93/</url>
+    <content><![CDATA[<h2 id="命名"><a href="#命名" class="headerlink" title="命名"></a>命名</h2><ol>
+<li><p>名副其实：不使用缩写、不使用让人误解的名称，不要让人推测。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// bad: 啥？</span></span><br><span class="line"><span class="keyword">const</span> yyyymmdstr = <span class="title function_">moment</span>().<span class="title function_">format</span>(<span class="string">&quot;YYYY/MM/DD&quot;</span>);</span><br><span class="line"><span class="comment">// bad: 缩写</span></span><br><span class="line"><span class="keyword">const</span> cD = <span class="title function_">moment</span>().<span class="title function_">format</span>(<span class="string">&quot;YYYY/MM/DD&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// good:</span></span><br><span class="line"><span class="keyword">const</span> currentDate = <span class="title function_">moment</span>().<span class="title function_">format</span>(<span class="string">&quot;YYYY/MM/DD&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> locations = [<span class="string">&quot;Austin&quot;</span>, <span class="string">&quot;New York&quot;</span>, <span class="string">&quot;San Francisco&quot;</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// bad：推测l是locations的项</span></span><br><span class="line">locations.<span class="title function_">forEach</span>(<span class="function"><span class="params">l</span> =&gt;</span> <span class="title function_">doSomeThing</span>(l));</span><br><span class="line"></span><br><span class="line"><span class="comment">// good</span></span><br><span class="line">locations.<span class="title function_">forEach</span>(<span class="function"><span class="params">location</span> =&gt;</span> <span class="title function_">doSomeThing</span>(location));</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div></li>
+<li><p>使用方便搜索的名称：避免硬编码，对数据用常量const记录。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// bad: 86400000指的是？</span><br><span class="line">setTimeout(goToWork, 86400000);</span><br><span class="line"></span><br><span class="line">// good: 86400000是一天的毫秒数</span><br><span class="line">const MILLISECONDS_PER_DAY = 60 * 60 * 24 * 1000;</span><br><span class="line">setTimeout(goToWork, MILLISECONDS_PER_DAY);</span><br></pre></td></tr></table></figure></div></li>
+<li><p>类名应该是名词，方法名应该是动词。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// bad</span><br><span class="line">function visble() &#123;&#125;</span><br><span class="line"></span><br><span class="line">// good</span><br><span class="line">function getVisble() &#123;&#125;</span><br></pre></td></tr></table></figure></div></li>
+<li><p>多个变量属于同一类型的属性，那就他们整合成一个对象。同时省略多余的上下文。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// bad：可以整合</span><br><span class="line">const carMake = &quot;Honda&quot;,</span><br><span class="line">const carModel = &quot;Accord&quot;,</span><br><span class="line">const carColor = &quot;Blue&quot;,</span><br><span class="line"></span><br><span class="line">// bad: 多余上下文</span><br><span class="line">const Car = &#123;</span><br><span class="line">  carMake: &quot;Honda&quot;,</span><br><span class="line">  carModel: &quot;Accord&quot;,</span><br><span class="line">  carColor: &quot;Blue&quot;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// good</span><br><span class="line">const Car = &#123;</span><br><span class="line">  make: &quot;Honda&quot;,</span><br><span class="line">  model: &quot;Accord&quot;,</span><br><span class="line">  color: &quot;Blue&quot;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div></li>
+</ol>
+<p>其他：</p>
+<ul>
+<li>不要写多余的废话，比如 <code>theMessage</code>的 <code>the</code>可以删除。</li>
+<li>统一术语。比如通知一词，不要一会在叫 <code>notice</code>，一会叫 <code>announce</code>。</li>
+<li>用读得通顺的词语。比如 <code>getElementById</code>就比 <code>useIdToGetElement</code>好读。</li>
+</ul>
+<h2 id="函数（方法）"><a href="#函数（方法）" class="headerlink" title="函数（方法）"></a>函数（方法）</h2><ul>
+<li><p>删除重复的代码，don’t repeat yourself。很多地方可以注意dry，比如偷懒复制了某段代码、try…catch或条件语句写了重复的逻辑。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// bad</span><br><span class="line"> try &#123;</span><br><span class="line">     doSomeThing();</span><br><span class="line">     clearStack();</span><br><span class="line"> &#125; catch (e) &#123;</span><br><span class="line">     handleError(e);</span><br><span class="line">     clearStack();</span><br><span class="line"> &#125;</span><br><span class="line"> // good</span><br><span class="line"> try &#123;</span><br><span class="line">     doSomeThing();</span><br><span class="line"> &#125; catch (e) &#123;</span><br><span class="line">     handleError(e);</span><br><span class="line"> &#125; finally &#123;</span><br><span class="line">     clearStack();</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></div></li>
+<li><p>形参不超过三个，对测试函数也方便。多了就使用对象参数。</p>
+<ul>
+<li><p>同时建议使用对象解构语法，有几个好处：</p>
+<ol>
+<li>能清楚看到函数签名有哪些熟悉，</li>
+<li>可以直接重新命名，</li>
+<li>解构自带克隆，防止副作用，</li>
+<li>Linter检查到函数未使用的属性。</li>
+</ol>
+</li>
+</ul>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// bad</span><br><span class="line">function createMenu(title, body, buttonText, cancellable) &#123;&#125;</span><br><span class="line"></span><br><span class="line">// good</span><br><span class="line">function createMenu(&#123; title, body, buttonText, cancellable &#125;) &#123;&#125;</span><br></pre></td></tr></table></figure></div></li>
+<li><p>函数只做一件事，代码读起来更清晰，函数就能更好地组合、测试、重构。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// bad: 处理了输入框的change事件，并创建文件的切片，并保存相关信息到localStorage</span><br><span class="line">function handleInputChange(e) &#123;</span><br><span class="line">    const file = e.target.files[0];</span><br><span class="line">    // --- 切片 ---</span><br><span class="line">    const chunkList = [];</span><br><span class="line">    let cur = 0;</span><br><span class="line">    while (cur &lt; file.size) &#123;</span><br><span class="line">        chunkList.push(&#123;</span><br><span class="line">          chunk: file.slice(cur, cur + size)</span><br><span class="line">        &#125;);</span><br><span class="line">        cur += size;</span><br><span class="line">    &#125;</span><br><span class="line">    // --- 保存信息到localstorage ---</span><br><span class="line">    localStorage.setItem(&quot;file&quot;, file.name);</span><br><span class="line">    localStorage.setItem(&quot;chunkListLength&quot;, chunkList.length);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// good: 将三件事分开写，同时自顶而下读，很舒适</span><br><span class="line">function handleInputChange(e) &#123;</span><br><span class="line">    const file = e.target.files[0];</span><br><span class="line">    const chunkList = createChunk(file);</span><br><span class="line">    saveFileInfoInLocalStorage(file, chunkList);</span><br><span class="line">&#125;</span><br><span class="line">function createChunk(file, size = SLICE_SIZE) &#123;</span><br><span class="line">    const chunkList = [];</span><br><span class="line">    let cur = 0;</span><br><span class="line">    while (cur &lt; file.size) &#123;</span><br><span class="line">        chunkList.push(&#123;</span><br><span class="line">          chunk: file.slice(cur, cur + size)</span><br><span class="line">        &#125;);</span><br><span class="line">        cur += size;</span><br><span class="line">    &#125;</span><br><span class="line">    return chunkList</span><br><span class="line">&#125;</span><br><span class="line">function saveFileInfoInLocalStorage(file, chunkList) &#123;</span><br><span class="line">    localStorage.setItem(&quot;file&quot;, file.name);</span><br><span class="line">    localStorage.setItem(&quot;chunkListLength&quot;, chunkList.length);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+<li><p>自顶向下地书写函数，人们都是习惯自顶向下读代码，如，为了执行A，需要执行B，为了执行B，需要执行C。如果把A、B、C混在一个函数就很难读了。(看前一个的例子)。</p>
+</li>
+<li><p>不使用布尔值来作为参数，遇到这种情况时，一定可以拆分函数。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// bad</span><br><span class="line">function createFile(name, temp) &#123;</span><br><span class="line">  if (temp) &#123;</span><br><span class="line">    fs.create(`./temp/$&#123;name&#125;`);</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    fs.create(name);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// good</span><br><span class="line">function createFile(name) &#123;</span><br><span class="line">  fs.create(name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function createTempFile(name) &#123;</span><br><span class="line">  createFile(`./temp/$&#123;name&#125;`);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+<li><p>避免副作用。</p>
+<ul>
+<li><p>副作用的缺点：出现不可预期的异常，比如用户对购物车下单后，网络差而不断重试请求，这时如果添加新商品到购物车，就会导致新增的商品也会到下单的请求中。</p>
+</li>
+<li><p>集中副作用：遇到不可避免的副作用时候，比如读写文件、上报日志，那就在一个地方集中处理副作用，不要在多个函数和类处理副作用。</p>
+</li>
+<li><p>其它注意的地方：</p>
+<ul>
+<li>常见就是陷阱就是对象之间共享了状态，使用了可变的数据类型，比如对象和数组。对于可变的数据类型，使用immutable等库来高效克隆。</li>
+<li>避免用可变的全局变量。</li>
+</ul>
+</li>
+</ul>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// bad：注意到cart是引用类型！</span><br><span class="line">const addItemToCart = (cart, item) =&gt; &#123;</span><br><span class="line">  cart.push(&#123; item, date: Date.now() &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// good</span><br><span class="line">const addItemToCart = (cart, item) =&gt; &#123;</span><br><span class="line">  return [...cart, &#123; item, date: Date.now() &#125;];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div></li>
+<li><p>封装复杂的判断条件，提高可读性。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// bad</span><br><span class="line"> if (!(obj =&gt; obj != null &amp;&amp; typeof obj[Symbol.iterator] === &#x27;function&#x27;)) &#123;</span><br><span class="line">     throw new Error(&#x27;params is not iterable&#x27;)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> // good</span><br><span class="line"> const isIterable = obj =&gt; obj != null &amp;&amp; typeof obj[Symbol.iterator] === &#x27;function&#x27;;</span><br><span class="line"> if (!isIterable(promises)) &#123;</span><br><span class="line">     throw new Error(&#x27;params is not iterable&#x27;)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div></li>
+<li><p>在方法中有多条件判断时候，为了提高函数的可扩展性，考虑下是不是可以使用能否使用多态性来解决。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 地图接口可能来自百度，也可能来自谷歌</span><br><span class="line"> const googleMap = &#123;</span><br><span class="line">     show: function (size) &#123;</span><br><span class="line">         console.log(&#x27;开始渲染谷歌地图&#x27;, size));</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;;</span><br><span class="line"> const baiduMap = &#123;</span><br><span class="line">     render: function (size) &#123;</span><br><span class="line">         console.log(&#x27;开始渲染百度地图&#x27;, size));</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;;</span><br><span class="line"></span><br><span class="line"> // bad: 出现多个条件分支。如果要加一个腾讯地图，就又要改动renderMap函数。</span><br><span class="line"> function renderMap(type) &#123;</span><br><span class="line">     const size = getSize();</span><br><span class="line">     if (type === &#x27;google&#x27;) &#123;</span><br><span class="line">         googleMap.show(size);</span><br><span class="line">     &#125; else if (type === &#x27;baidu&#x27;) &#123;</span><br><span class="line">         baiduMap.render(size);</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;;</span><br><span class="line"> renderMap(&#x27;google&#x27;)</span><br><span class="line"></span><br><span class="line"> // good：实现多态处理。如果要加一个腾讯地图，不需要改动renderMap函数。</span><br><span class="line"> // 细节：函数作为一等对象的语言中，作为参数传递也会返回不同的执行结果，也是“多态性”的体现。</span><br><span class="line"> function renderMap (renderMapFromApi) &#123;</span><br><span class="line">     const size = getSize();</span><br><span class="line">     renderMapFromApi(size);</span><br><span class="line"> &#125;</span><br><span class="line"> renderMap((size) =&gt; googleMap.show(size));</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<p>其他</p>
+<ul>
+<li>如果用了TS，没必要做多余类型判断。</li>
+</ul>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><ol>
+<li><p>一般代码要能清晰的表达意图，只有遇到复杂的逻辑时才注释。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// good：由于函数名已经解释不清楚函数的用途了，所以注释里说明。</span><br><span class="line"> // 在nums数组中找出 和为目标值 target 的两个整数，并返回它们的数组下标。</span><br><span class="line"> const twoSum = function(nums, target) &#123;</span><br><span class="line">     let map = new Map()</span><br><span class="line">     for (let i = 0; i &lt; nums.length; i++) &#123;</span><br><span class="line">         const item = nums[i];</span><br><span class="line">         const index = map.get(target - item)</span><br><span class="line">         if (index !== undefined)&#123;</span><br><span class="line">             return [index, i]</span><br><span class="line">         &#125;</span><br><span class="line">         map.set(item, i)</span><br><span class="line">     &#125;</span><br><span class="line">     return []</span><br><span class="line"> &#125;;</span><br><span class="line"></span><br><span class="line"> // bad：加了一堆废话</span><br><span class="line"> const twoSum = function(nums, target) &#123;</span><br><span class="line">     // 声明map变量</span><br><span class="line">     let map = new Map()</span><br><span class="line">     // 遍历</span><br><span class="line">     for (let i = 0; i &lt; nums.length; i++) &#123;</span><br><span class="line">         const item = nums[i];</span><br><span class="line">         const index = map.get(target - item)</span><br><span class="line">         // 如果下标为空</span><br><span class="line">         if (index !== undefined)&#123;</span><br><span class="line">             return [index, i]</span><br><span class="line">         &#125;</span><br><span class="line">         map.set(item, i)</span><br><span class="line">     &#125;</span><br><span class="line">     return []</span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure></div></li>
+<li><p>警示作用，解释此处不能修改的原因。</p>
+<p><code>// hack: 由于XXX历史原因，只能调度一下。 setTimeout(doSomething, 0)</code></p>
+</li>
+<li><p>TODO注释，记录下应该做但还没做的工作。另一个好处，提前写好命名，可以帮助后来者统一命名风格。</p>
+<p><code>class Comment &#123;     // todo: 删除功能后期实现     delete() &#123;&#125; &#125;</code></p>
+</li>
+<li><p>没用的代码直接删除，不要注释，反正git提交历史记录可以找回。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// bad: 如下，重写了一遍两数之和的实现方式</span><br><span class="line"></span><br><span class="line">// const twoSum = function(nums, target) &#123;</span><br><span class="line">//     for(let i = 0;i&lt;nums.length;i++)&#123;</span><br><span class="line">//         for(let j = i+1;j&lt;nums.length;j++)&#123;</span><br><span class="line">//             if (nums[i] + nums[j] === target) &#123;</span><br><span class="line">//                 return [i,j]</span><br><span class="line">//             &#125;</span><br><span class="line">//         &#125;</span><br><span class="line">//     &#125;</span><br><span class="line">// &#125;;</span><br><span class="line">const twoSum = function(nums, target) &#123;</span><br><span class="line">    let map = new Map()</span><br><span class="line">    for (let i = 0; i &lt; nums.length; i++) &#123;</span><br><span class="line">        const item = nums[i];</span><br><span class="line">        const index = map.get(target - item)</span><br><span class="line">        if (index !== undefined)&#123;</span><br><span class="line">            return [index, i]</span><br><span class="line">        &#125;</span><br><span class="line">        map.set(item, i)</span><br><span class="line">    &#125;</span><br><span class="line">    return []</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div></li>
+<li><p>避免循规式注释，不要求每个函数都要求jsdoc，jsdoc一般是用在公共代码上。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// bad: 如下，重写了一遍两数之和的实现方式</span><br><span class="line"></span><br><span class="line">// const twoSum = function(nums, target) &#123;</span><br><span class="line">//     for(let i = 0;i&lt;nums.length;i++)&#123;</span><br><span class="line">//         for(let j = i+1;j&lt;nums.length;j++)&#123;</span><br><span class="line">//             if (nums[i] + nums[j] === target) &#123;</span><br><span class="line">//                 return [i,j]</span><br><span class="line">//             &#125;</span><br><span class="line">//         &#125;</span><br><span class="line">//     &#125;</span><br><span class="line">// &#125;;</span><br><span class="line">const twoSum = function(nums, target) &#123;</span><br><span class="line">    let map = new Map()</span><br><span class="line">    for (let i = 0; i &lt; nums.length; i++) &#123;</span><br><span class="line">        const item = nums[i];</span><br><span class="line">        const index = map.get(target - item)</span><br><span class="line">        if (index !== undefined)&#123;</span><br><span class="line">            return [index, i]</span><br><span class="line">        &#125;</span><br><span class="line">        map.set(item, i)</span><br><span class="line">    &#125;</span><br><span class="line">    return []</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div></li>
+</ol>
+<h2 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h2><ul>
+<li><p>多使用getter和setter（getXXX和setXXX）。好处：</p>
+<ul>
+<li>在set时方便验证。</li>
+<li>可以添加埋点，和错误处理。</li>
+<li>可以延时加载对象的属性。</li>
+</ul>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// good</span><br><span class="line">function makeBankAccount() &#123;</span><br><span class="line">  let balance = 0;</span><br><span class="line"></span><br><span class="line">  function getBalance() &#123;</span><br><span class="line">    return balance;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  function setBalance(amount) &#123;</span><br><span class="line">    balance = amount;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return &#123;</span><br><span class="line">    getBalance,</span><br><span class="line">    setBalance</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const account = makeBankAccount();</span><br><span class="line">account.setBalance(100);</span><br></pre></td></tr></table></figure></div></li>
+<li><p>使用私有成员。对外隐藏不必要的内容。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// bad</span><br><span class="line">const Employee = function(name) &#123;</span><br><span class="line">  this.name = name;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Employee.prototype.getName = function getName() &#123;</span><br><span class="line">  return this.name;</span><br><span class="line">&#125;;</span><br><span class="line">const employee = new Employee(&quot;John Doe&quot;);</span><br><span class="line">delete employee.name;</span><br><span class="line">console.log(employee.getName()); // undefined</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// good</span><br><span class="line">function makeEmployee(name) &#123;</span><br><span class="line">  return &#123;</span><br><span class="line">    getName() &#123;</span><br><span class="line">      return name;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<h2 id="类"><a href="#类" class="headerlink" title="类"></a>类</h2><p><strong>solid</strong></p>
+<ul>
+<li><p><strong>单一职责原则 (SRP)</strong> - 保证“每次改动只有一个修改理由”。因为如果一个类中有太多功能并且您修改了其中的一部分，则很难预期改动对其他功能的影响。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// bad：设置操作和验证权限放在一起了</span><br><span class="line">class UserSettings &#123;</span><br><span class="line">  constructor(user) &#123;</span><br><span class="line">    this.user = user;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  changeSettings(settings) &#123;</span><br><span class="line">    if (this.verifyCredentials()) &#123;</span><br><span class="line">      // ...</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  verifyCredentials() &#123;</span><br><span class="line">    // ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// good: 拆出验证权限的类</span><br><span class="line">class UserAuth &#123;</span><br><span class="line">  constructor(user) &#123;</span><br><span class="line">    this.user = user;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  verifyCredentials() &#123;</span><br><span class="line">    // ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class UserSettings &#123;</span><br><span class="line">  constructor(user) &#123;</span><br><span class="line">    this.user = user;</span><br><span class="line">    this.auth = new UserAuth(user);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  changeSettings(settings) &#123;</span><br><span class="line">    if (this.auth.verifyCredentials()) &#123;</span><br><span class="line">      // ...</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+<li><p><strong>开闭原则 (OCP)</strong> - 对扩展放开，但是对修改关闭。在不更改现有代码的情况下添加新功能。比如一个方法因为有switch的语句，每次出现新增条件时就要修改原来的方法。这时候不如换成多态的特性。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// bad: 注意到fetch用条件语句了，不利于扩展</span><br><span class="line">class AjaxAdapter extends Adapter &#123;</span><br><span class="line">  constructor() &#123;</span><br><span class="line">    super();</span><br><span class="line">    this.name = &quot;ajaxAdapter&quot;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class NodeAdapter extends Adapter &#123;</span><br><span class="line">  constructor() &#123;</span><br><span class="line">    super();</span><br><span class="line">    this.name = &quot;nodeAdapter&quot;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class HttpRequester &#123;</span><br><span class="line">  constructor(adapter) &#123;</span><br><span class="line">    this.adapter = adapter;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  fetch(url) &#123;</span><br><span class="line">    if (this.adapter.name === &quot;ajaxAdapter&quot;) &#123;</span><br><span class="line">      return makeAjaxCall(url).then(response =&gt; &#123;</span><br><span class="line">        // transform response and return</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125; else if (this.adapter.name === &quot;nodeAdapter&quot;) &#123;</span><br><span class="line">      return makeHttpCall(url).then(response =&gt; &#123;</span><br><span class="line">        // transform response and return</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function makeAjaxCall(url) &#123;</span><br><span class="line">  // request and return promise</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function makeHttpCall(url) &#123;</span><br><span class="line">  // request and return promise</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// good</span><br><span class="line">class AjaxAdapter extends Adapter &#123;</span><br><span class="line">  constructor() &#123;</span><br><span class="line">    super();</span><br><span class="line">    this.name = &quot;ajaxAdapter&quot;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  request(url) &#123;</span><br><span class="line">    // request and return promise</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class NodeAdapter extends Adapter &#123;</span><br><span class="line">  constructor() &#123;</span><br><span class="line">    super();</span><br><span class="line">    this.name = &quot;nodeAdapter&quot;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  request(url) &#123;</span><br><span class="line">    // request and return promise</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class HttpRequester &#123;</span><br><span class="line">  constructor(adapter) &#123;</span><br><span class="line">    this.adapter = adapter;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  fetch(url) &#123;</span><br><span class="line">    return this.adapter.request(url).then(response =&gt; &#123;</span><br><span class="line">      // transform response and return</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+<li><p><strong>里氏替换原则 (LSP)</strong></p>
+<ul>
+<li><p>两个定义</p>
+<ul>
+<li>如果S是T的子类，则T的<strong>对象</strong>可以替换为S的对象，而不会破坏程序。</li>
+<li>所有引用其父类<strong>对象方法</strong>的地方，都可以透明的替换为其子类对象。</li>
+<li>    也就是，保证任何父类对象出现的地方，用其子类的对象来替换，不会出错。下面的例子是经典的正方形、长方形例子。</li>
+</ul>
+</li>
+</ul>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// bad: 用正方形继承了长方形</span><br><span class="line">class Rectangle &#123;</span><br><span class="line">  constructor() &#123;</span><br><span class="line">    this.width = 0;</span><br><span class="line">    this.height = 0;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  setColor(color) &#123;</span><br><span class="line">    // ...</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render(area) &#123;</span><br><span class="line">    // ...</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  setWidth(width) &#123;</span><br><span class="line">    this.width = width;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  setHeight(height) &#123;</span><br><span class="line">    this.height = height;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  getArea() &#123;</span><br><span class="line">    return this.width * this.height;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Square extends Rectangle &#123;</span><br><span class="line">  setWidth(width) &#123;</span><br><span class="line">    this.width = width;</span><br><span class="line">    this.height = width;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  setHeight(height) &#123;</span><br><span class="line">    this.width = height;</span><br><span class="line">    this.height = height;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function renderLargeRectangles(rectangles) &#123;</span><br><span class="line">  rectangles.forEach(rectangle =&gt; &#123;</span><br><span class="line">    rectangle.setWidth(4);</span><br><span class="line">    rectangle.setHeight(5);</span><br><span class="line">    const area = rectangle.getArea(); // BAD: 返回了25，其实应该是20</span><br><span class="line">    rectangle.render(area);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const rectangles = [new Rectangle(), new Rectangle(), new Square()];// 这里替换了</span><br><span class="line">renderLargeRectangles(rectangles);</span><br><span class="line"></span><br><span class="line">// good: 取消正方形和长方形继承关系，都继承Shape</span><br><span class="line">class Shape &#123;</span><br><span class="line">  setColor(color) &#123;</span><br><span class="line">    // ...</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render(area) &#123;</span><br><span class="line">    // ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Rectangle extends Shape &#123;</span><br><span class="line">  constructor(width, height) &#123;</span><br><span class="line">    super();</span><br><span class="line">    this.width = width;</span><br><span class="line">    this.height = height;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  getArea() &#123;</span><br><span class="line">    return this.width * this.height;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Square extends Shape &#123;</span><br><span class="line">  constructor(length) &#123;</span><br><span class="line">    super();</span><br><span class="line">    this.length = length;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  getArea() &#123;</span><br><span class="line">    return this.length * this.length;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function renderLargeShapes(shapes) &#123;</span><br><span class="line">  shapes.forEach(shape =&gt; &#123;</span><br><span class="line">    const area = shape.getArea();</span><br><span class="line">    shape.render(area);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const shapes = [new Rectangle(4, 5), new Rectangle(4, 5), new Square(5)];</span><br><span class="line">renderLargeShapes(shapes);</span><br><span class="line"></span><br></pre></td></tr></table></figure></div></li>
+<li><p><strong>接口隔离原则 (ISP)</strong> - 定义是”客户不应被迫使用对其而言无用的方法或功能”。常见的就是让一些参数变成可选的。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// bad</span><br><span class="line">class Dog &#123;</span><br><span class="line">    constructor(options) &#123;</span><br><span class="line">        this.options = options;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    run() &#123;</span><br><span class="line">        this.options.run(); // 必须传入 run 方法，不然报错</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const dog = new Dog(&#123;&#125;); // Uncaught TypeError: this.options.run is not a function</span><br><span class="line"></span><br><span class="line">dog.run()</span><br><span class="line"></span><br><span class="line">// good</span><br><span class="line">class Dog &#123;</span><br><span class="line">    constructor(options) &#123;</span><br><span class="line">        this.options = options;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    run() &#123;</span><br><span class="line">        if (this.options.run) &#123;</span><br><span class="line">            this.options.run();</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        console.log(&#x27;跑步&#x27;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+<li><p><strong>依赖倒置原则（DIP）</strong> - 程序要依赖于抽象接口(可以理解为入参)，不要依赖于具体实现。这样可以减少耦合度。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">// bad</span><br><span class="line">class OldReporter &#123;</span><br><span class="line">  report(info) &#123;</span><br><span class="line">    // ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Message &#123;</span><br><span class="line">  constructor(options) &#123;</span><br><span class="line">    // ...</span><br><span class="line">    // BAD: 这里依赖了一个实例，那你以后要换一个，就麻烦了</span><br><span class="line">    this.reporter = new OldReporter();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  share() &#123;</span><br><span class="line">    this.reporter.report(&#x27;start share&#x27;);</span><br><span class="line">    // ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// good</span><br><span class="line">class Message &#123;</span><br><span class="line">  constructor(options) &#123;</span><br><span class="line">    // reporter 作为选项，可以随意换了</span><br><span class="line">    this.reporter = this.options.reporter;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  share() &#123;</span><br><span class="line">    this.reporter.report(&#x27;start share&#x27;);</span><br><span class="line">    // ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">class NewReporter &#123;</span><br><span class="line">  report(info) &#123;</span><br><span class="line">    // ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">new Message(&#123; reporter: new NewReporter &#125;);</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<p>其他</p>
+<ul>
+<li>优先使用 ES2015&#x2F;ES6 类而不是 ES5 普通函数。</li>
+<li>多使用方法链。</li>
+<li>多使用组合而不是继承。</li>
+</ul>
+<h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><ul>
+<li>不要忽略捕获的错误。而要充分对错误做出反应，比如console.error()到控制台，提交错误日志，提醒用户等操作。</li>
+<li>不要漏了catch promise中的reject。</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>ECharts</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>八股文常考</title>
+    <url>/2023/06/16/%E5%85%AB%E8%82%A1%E6%96%87%E5%B8%B8%E8%80%83/</url>
+    <content><![CDATA[<h2 id="1-作用域和闭包"><a href="#1-作用域和闭包" class="headerlink" title="1.作用域和闭包"></a>1.作用域和闭包</h2><p><strong><code>作用域</code></strong> 指代码当前上下文，控制着变量和函数的可见性和生命周期。最大的作用是隔离变量，不同作用域下同名变量不会冲突。</p>
+<p><strong><code>作用域链</code></strong> 指如果在当前作用域中没有查到值，就会向上级作用域查询，直到全局作用域，这样一个查找过程所形成的链条就被称之为作用域链。</p>
+<p>作用域可以堆叠成层次结构，子作用域可以访问父作用域，反之则不行。</p>
+<p>作用域具体可细分为四种：**<code>全局作用域</code><strong>、</strong><code>模块作用域</code><strong>、</strong><code>函数作用域</code><strong>、</strong><code>块级作用域</code>**</p>
+<p><strong>全局作用域：</strong> 代码在程序的任何地方都能被访问，例如 window 对象。但全局变量会污染全局命名空间，容易引起命名冲突。</p>
+<p><strong>模块作用域：</strong> 早期 js 语法中没有模块的定义，因为最初的脚本小而简单。后来随着脚本越来越复杂，就出现了模块化方案（AMD、CommonJS、UMD、ES6模块等）。通常一个模块就是一个文件或者一段脚本，而这个模块拥有自己独立的作用域。</p>
+<p><strong>函数作用域：</strong> 顾名思义由函数创建的作用域。闭包就是在该作用域下产生，后面我们会单独介绍。</p>
+<p><strong>块级作用域：</strong> 由于 js 变量提升存在变量覆盖、变量污染等设计缺陷，所以 ES6 引入了块级作用域关键字来解决这些问题。典型的案例就是 let 的 for 循环和 var 的 for 循环。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// var demo</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(i);</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(i); <span class="comment">// 10</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// let demo</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(i);</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(i); <span class="comment">//ReferenceError：i is not defined</span></span><br></pre></td></tr></table></figure></div>
+
+<p>了解完作用域再来谈谈 <strong><code>闭包</code>：</strong> 函数A里包含了函数B，而函数B使用了函数A的变量，那么函数B被称为闭包或者闭包就是能够读取函数A内部变量的函数。</p>
+<p>可以看出闭包是函数作用域下的产物，闭包会随着外层函数的执行而被同时创建，它是一个函数以及其捆绑的周边环境状态的引用的组合。换而言之，<strong>闭包是内层函数对外层函数变量的不释放</strong>。</p>
+<p><strong>闭包的特征：</strong></p>
+<ul>
+<li>函数中存在函数；</li>
+<li>内部函数可以访问外层函数的作用域；</li>
+<li>参数和变量不会被 GC，始终驻留在内存中；</li>
+<li>有内存地方才有闭包。</li>
+</ul>
+<p>所以使用闭包会消耗内存、不正当使用会造成内存溢出的问题，在退出函数之前，需要将不使用的局部变量全部删除。如果不是某些特定需求，在函数中创建函数是不明智的，闭包在处理速度和内存消耗方面对脚本性能具有负面影响。</p>
+<p><strong>以下整理了闭包的应用场景：</strong></p>
+<div class="highlight-container" data-rel="Typescript"><figure class="iseeu highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// demo1 输出 3 3 3</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(i);</span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">&#125; </span><br><span class="line"><span class="comment">// demo2 输出 0 1 2</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(i);</span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// demo3 输出 0 1 2</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">    (<span class="keyword">function</span>(<span class="params">i</span>)&#123;</span><br><span class="line">        <span class="built_in">setTimeout</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(i);</span><br><span class="line">        &#125;, <span class="number">1000</span>);</span><br><span class="line">    &#125;)(i)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 模拟私有方法 */</span></span><br><span class="line"><span class="comment">// 模拟对象的get与set方法</span></span><br><span class="line"><span class="keyword">var</span> <span class="title class_">Counter</span> = (<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line"><span class="keyword">var</span> privateCounter = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">changeBy</span>(<span class="params">val</span>) &#123;</span><br><span class="line">    privateCounter += val;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">increment</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">changeBy</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">decrement</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">changeBy</span>(-<span class="number">1</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">value</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> privateCounter;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;)();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Counter</span>.<span class="title function_">value</span>()); <span class="comment">/* logs 0 */</span></span><br><span class="line"><span class="title class_">Counter</span>.<span class="title function_">increment</span>();</span><br><span class="line"><span class="title class_">Counter</span>.<span class="title function_">increment</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Counter</span>.<span class="title function_">value</span>()); <span class="comment">/* logs 2 */</span></span><br><span class="line"><span class="title class_">Counter</span>.<span class="title function_">decrement</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Counter</span>.<span class="title function_">value</span>()); <span class="comment">/* logs 1 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* setTimeout中使用 */</span></span><br><span class="line"><span class="comment">// setTimeout(fn, number): fn 是不能带参数的。使用闭包绑定一个上下文可以在闭包中获取这个上下文的数据。</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">func</span>(<span class="params">param</span>)&#123; <span class="keyword">return</span> <span class="keyword">function</span>(<span class="params"></span>)&#123; <span class="title function_">alert</span>(param) &#125;&#125;</span><br><span class="line"><span class="keyword">const</span> f1 = <span class="title function_">func</span>(<span class="number">1</span>);<span class="built_in">setTimeout</span>(f1,<span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 生产者/消费者模型 */</span></span><br><span class="line"><span class="comment">// 不使用闭包</span></span><br><span class="line"><span class="comment">// 生产者</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">producer</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">const</span> data = <span class="keyword">new</span>（...）</span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 消费者</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">consumer</span>(<span class="params">data</span>)&#123;</span><br><span class="line">    <span class="comment">// do consume...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> data = <span class="title function_">producer</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用闭包</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">process</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">var</span> data = <span class="keyword">new</span> (...)</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> <span class="title function_">consumer</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="comment">// do consume data ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> processer = <span class="title function_">process</span>()</span><br><span class="line"><span class="title function_">processer</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 实现继承 */</span></span><br><span class="line"><span class="comment">// 以下两种方式都可以实现继承，但是闭包方式每次构造器都会被调用且重新赋值一次所以，所以实现继承原型优于闭包</span></span><br><span class="line"><span class="comment">// 闭包</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">MyObject</span>(<span class="params">name, message</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name.<span class="title function_">toString</span>();</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">message</span> = message.<span class="title function_">toString</span>();</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">getName</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">name</span>;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">getMessage</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">message</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 原型</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">MyObject</span>(<span class="params">name, message</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name.<span class="title function_">toString</span>();</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">message</span> = message.<span class="title function_">toString</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">MyObject</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">getName</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">name</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="title class_">MyObject</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">getMessage</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">message</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>对于闭包的概念好像懂了但又好像缺少了啥？意犹未尽。我也曾也闭包中迷失，但是看完闭包的生命周期让我重新找回自己。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/32826c4464ff4b8e86d68606a2a6f68b~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="一张图看懂闭包的生命周期"
+                ></p>
+<p>学完就来一波牛刀小试</p>
+<div class="highlight-container" data-rel="Typescript"><figure class="iseeu highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">test</span>(<span class="params">a, b</span>)&#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(b);</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">test</span>: <span class="keyword">function</span>(<span class="params">c</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="title function_">test</span>(c,a);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = <span class="title function_">test</span>(<span class="number">100</span>);a.<span class="title function_">test</span>(<span class="number">101</span>);a.<span class="title function_">test</span>(<span class="number">102</span>);</span><br><span class="line"><span class="keyword">var</span> b = <span class="title function_">test</span>(<span class="number">200</span>).<span class="title function_">test</span>(<span class="number">201</span>).<span class="title function_">test</span>(<span class="number">202</span>);</span><br><span class="line"><span class="keyword">var</span> c = <span class="title function_">test</span>(<span class="number">300</span>).<span class="title function_">test</span>(<span class="number">301</span>);c.<span class="title function_">test</span>(<span class="number">302</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// undefined  100  100</span></span><br><span class="line"><span class="comment">// undefined  200 201</span></span><br><span class="line"><span class="comment">// undefined  300 301</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="2-原型和原型链"><a href="#2-原型和原型链" class="headerlink" title="2.原型和原型链"></a>2.原型和原型链</h2><p>有对象的地方就有 **<code>原型</code>**，每个对象都会在其内部初始化一个属性，就是prototype(原型)，原型中存储共享的属性和方法。当我们访问一个对象的属性时，js引擎会先看当前对象中是否有这个属性，如果没有的就会查找他的prototype对象是否有这个属性，如此递推下去，一直检索到 Object 内建对象。这么一个寻找的过程就形成了 <strong><code>原型链</code></strong> 的概念。</p>
+<p>理解原型最关键的是理清楚__proto__、prototype、constructor三者的关系，我们先看看几个概念：</p>
+<ul>
+<li><strong>__proto__属性</strong>在所有对象中都存在，指向其构造函数的prototype对象；<strong>prototype对象</strong>只存在（构造）函数中，用于存储共享属性和方法；<strong>constructor属性</strong>只存在于（构造）函数的prototype中，指向（构造）函数本身。</li>
+<li>一个对象或者构造函数中的<strong>隐式原型__proto__<strong>的属性值指向其构造函数的</strong>显式原型 prototype</strong> 属性值，关系表示为：<code>instance.__proto__ === instance.constructor.prototype</code></li>
+<li>除了 Object，所有对象或构造函数的 prototype 均继承自 Object.prototype，原型链的顶层指向 null：<code>Object.prototype.__proto__ === null</code></li>
+<li>Object.prototype 中也有 constructor：<code>Object.prototype.constructor === Object</code></li>
+<li>构造函数创建的对象（Object、Function、Array、普通对象等）都是 Function 的实例，它们的 __proto__ 均指向 Function.prototype。</li>
+</ul>
+<p>看起来是不是有点乱？？别慌！！一张图帮你整理它们之间的关系</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c53c982b06274603a7d99d2b9f49a4e5~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="原型关系图"
+                ></p>
+<p>相同的配方再来一刀</p>
+<div class="highlight-container" data-rel="Typescript"><figure class="iseeu highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">arr.<span class="property">__proto__</span> === <span class="title class_">Array</span>.<span class="property"><span class="keyword">prototype</span></span>; <span class="comment">// true</span></span><br><span class="line">arr.<span class="property">__proto__</span>.<span class="property">__proto__</span> === <span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>; <span class="comment">// true</span></span><br><span class="line"><span class="title class_">Array</span>.<span class="property">__proto__</span> === <span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span>; <span class="comment">// true</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="3-异步和单线程"><a href="#3-异步和单线程" class="headerlink" title="3.异步和单线程"></a>3.异步和单线程</h2><p>JavaScript 是 <strong><code>单线程</code></strong> 语言，意味着只有单独的一个调用栈，同一时间只能处理一个任务或一段代码。队列、堆、栈、事件循环构成了 js 的并发模型，**<code>事件循环</code>** 是 JavaScript 的执行机制。</p>
+<p>为什么js是一门单线程语言呢？最初设计JS是用来在浏览器验证表单以及操控DOM元素，为了避免同一时间对同一个DOM元素进行操作从而导致不可预知的问题，JavaScript从一诞生就是单线程。</p>
+<p>既然是单线程也就意味着不存在异步，只能自上而下执行，如果代码阻塞只能一直等下去，这样导致很差的用户体验，所以事件循环的出现让 js 拥有异步的能力。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7bdd4419989d4bec8ac627480572cf84~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="事件循环链路图"
+                ></p>
+]]></content>
+      <tags>
+        <tag>作用域</tag>
+        <tag>闭包</tag>
+        <tag>原型</tag>
+        <tag>原型链</tag>
+        <tag>异步</tag>
+        <tag>单线程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git常见命令整理</title>
+    <url>/2023/06/16/git%20%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4%E6%95%B4%E7%90%86/</url>
+    <content><![CDATA[<h3 id="1-Windows-Git-下载安装"><a href="#1-Windows-Git-下载安装" class="headerlink" title="1. Windows-Git 下载安装"></a>1. Windows-Git 下载安装</h3><p> 官网下载地址：<a class="link"   href="https://link.juejin.cn/?target=https://git-scm.com/downloads"  title="https://git-scm.com/downloads">点击下载 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p> 官网下载太慢的解决方案 :  <a class="link"   href="https://link.juejin.cn/?target=https://npm.taobao.org/mirrors/git-for-windows/"  title="https://npm.taobao.org/mirrors/git-for-windows/">点击下载 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> </p>
+<h3 id="2-Git公钥生成与配置方法"><a href="#2-Git公钥生成与配置方法" class="headerlink" title="2 Git公钥生成与配置方法"></a>2 Git公钥生成与配置方法<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/image/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E8%9E%8D%E5%85%A5%E5%9B%A2%E9%98%9F/1692160200401.png"
+                      alt="1692160200401"
+                ></h3><h4 id="2-1-公钥的用途"><a href="#2-1-公钥的用途" class="headerlink" title="2.1 公钥的用途"></a>2.1 公钥的用途</h4><p>许多公司的代码仓库及第三方代码托管平台，使用的都是基于公钥的SSH认证方式(公钥加密，私钥解密)。</p>
+<p>Git推荐使用SSH协议的原因 使用SSH协议可以避免每次 <code>push</code>输入密码。 <a class="link"   href="https://link.juejin.cn/?target=mailto:git@github.com"  title="mailto:git@github.com">git@github.com <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>开头的就是SSH协议。 使用Https协议则每次都要输入用户名和密码。</p>
+<p>公钥是代码仓库服务器验证本地机器的一种身份识别方式。入职一家新公司后，公司的git服务器管理员，会要求你把你的git公钥通过邮件的方式发给它，配置好之后，以后每次向远程代码仓库提交代码，就不用输入用户名和密码啦。</p>
+<h4 id="2-2-生成公钥"><a href="#2-2-生成公钥" class="headerlink" title="2.2 生成公钥"></a>2.2 生成公钥</h4><p>这里插一句，如果感到git bash的窗口太小或者字体太小，可以自己进行调整。调整的方式是，打开git bash命令窗口后，在命令窗的标题栏，鼠标右键，然后选择options,安装下面的操作进行设置</p>
+<p>rust</p>
+<p>复制代码</p>
+<p><code>// 窗口尺寸设置 options --&gt; windows --&gt;修改行数(高度)+列数(宽度) // 窗口字体设置 options --&gt; text --&gt;设置字体大小</code></p>
+<h5 id="2-2-1-配置用户名和邮箱"><a href="#2-2-1-配置用户名和邮箱" class="headerlink" title="2.2.1 配置用户名和邮箱"></a>2.2.1 配置用户名和邮箱</h5><p>在公司使用的话，用户名建议配置成自己的真名，这样查看代码修改者的时候，比较好找。git config命令有三种作用域。</p>
+<p>lua</p>
+<p>复制代码</p>
+<p><code># 对当前仓库有效 git config  --local        # 对当前登录者有效，对所有仓库都有效 git config  --global     # 对登录这台电脑的人都有效，对所有仓库都有效 git config  --system</code> </p>
+<p>如果配置项比较多，可以在这些指令后面加 -e 参数，打开配置文件进行配置。编辑完先按esc, 然后再按shift+：组合键，最后在命令行输入wq保存退出</p>
+<p>这里明显应该选择git config –global配置命令。</p>
+<p>arduino</p>
+<p>复制代码</p>
+<p><code>git config --global user.name &quot;用户名&quot; git config --global user.email &quot;邮箱地址&quot;</code></p>
+<h5 id="2-2-2-生成密钥"><a href="#2-2-2-生成密钥" class="headerlink" title="2.2.2 生成密钥"></a>2.2.2 生成密钥</h5><p><code>ssh-keygen</code> 生成秘钥过程会有三次问询交互。第一次是询问生成秘钥存储路径和名称，默认存储位置是 &#x2F;c&#x2F;Users&#x2F;用户名&#x2F;<code>.ssh/id_rsa</code>， 不想更改的话按回车键。第二和第三次是要求你输入两次私钥密码。用于查看秘钥时的认证，一次是设置密码，一次是确认密码， 如果你不想在使用密钥时输入口令，按回车跳过即可。 </p>
+<p>复制代码</p>
+<p><code>ssh-keygen -t rsa -C “上一步的邮箱地址”</code></p>
+<h5 id="2-2-3-查看公钥"><a href="#2-2-3-查看公钥" class="headerlink" title="2.2.3 查看公钥"></a>2.2.3 查看公钥</h5><p>bash</p>
+<p>复制代码</p>
+<p> <code>cd ~/.ssh &amp;&amp; ls &amp;&amp; cat id_rsa.pub</code></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/621dcf71b99c40968000b99f03ef094b~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.image"
+                     
+                ></p>
+<h4 id="2-3-配置公钥"><a href="#2-3-配置公钥" class="headerlink" title="2.3 配置公钥"></a>2.3 配置公钥</h4><p>登录个人或企业的git网站，在用户设置–&gt;SSH公钥里面 ，给公钥起个有意义的名称，将生成的公钥粘贴到公钥输入框里（注意要删除公钥末尾的空白或者换行符），点击保存，就可以了。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8ce7692b69b74a34839cbdcda7b62269~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.image"
+                     
+                ></p>
+<h4 id="2-4-Git管理多个SSH密钥，Git多帐号配置"><a href="#2-4-Git管理多个SSH密钥，Git多帐号配置" class="headerlink" title="2.4 Git管理多个SSH密钥，Git多帐号配置"></a>2.4 Git管理多个SSH密钥，Git多帐号配置</h4><p>创建步骤：</p>
+<h5 id="2-4-1-在每个项目下，单独配置用户名和邮箱地址，为不同项目生成密钥对，生成时指定私钥名称"><a href="#2-4-1-在每个项目下，单独配置用户名和邮箱地址，为不同项目生成密钥对，生成时指定私钥名称" class="headerlink" title="2.4.1 在每个项目下，单独配置用户名和邮箱地址，为不同项目生成密钥对，生成时指定私钥名称"></a>2.4.1 在每个项目下，单独配置用户名和邮箱地址，为不同项目生成密钥对，生成时指定私钥名称</h5><p>arduino</p>
+<p>复制代码</p>
+<p><code>git config --local user.name &quot;你的名字&quot; git config --local user.email &quot;你的邮箱&quot;</code></p>
+<p>ssh-keygen命令生成SSH-KEY密钥对文件时，需要输入文件存储路径，为不同账号起不同的名称</p>
+<p>css</p>
+<p>复制代码</p>
+<p><code>ssh-keygen -t rsa -C &quot;test@126.com”</code></p>
+<h5 id="2-4-2-在-ssh文件夹下，创建一个config文件，配置每个账号域名、用户名-、-验证方式、私钥文件路径"><a href="#2-4-2-在-ssh文件夹下，创建一个config文件，配置每个账号域名、用户名-、-验证方式、私钥文件路径" class="headerlink" title="2.4.2 在~ssh文件夹下，创建一个config文件，配置每个账号域名、用户名 、 验证方式、私钥文件路径"></a>2.4.2 在~ssh文件夹下，创建一个config文件，配置每个账号域名、用户名 、 验证方式、私钥文件路径</h5><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">Host github.com</span><br><span class="line">    HostName github.com</span><br><span class="line">    User <span class="built_in">test</span>@126.com</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    IdentityFile /c/Users/用户名/.ssh/ssh/id_rsa_github</span><br><span class="line">Host oschina.com</span><br><span class="line">    HostName oschina.com</span><br><span class="line">    User <span class="built_in">test</span>@126.com</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    IdentityFile /c/Users/用户名/.ssh/ssh/id_rsa_github</span><br><span class="line">Host gitee.com </span><br><span class="line">　　HostName gitee.com </span><br><span class="line">　　User <span class="built_in">test</span>@126.com </span><br><span class="line">　　PreferredAuthentications publickey </span><br><span class="line">　　IdentityFile /c/Users/用户名/~ssh/id_rsa_gitee</span><br></pre></td></tr></table></figure></div>
+
+<p><code>HostName</code>是服务器的地址，<code>User</code>是用户名，<code>PreferredAuthentications</code>是验证方式，<code>IdentityFile是私钥文件路径</code></p>
+<h4 id="2-5-Win系统将VSCode的默认终端设置成GitBash"><a href="#2-5-Win系统将VSCode的默认终端设置成GitBash" class="headerlink" title="2.5 Win系统将VSCode的默认终端设置成GitBash"></a>2.5 Win系统将VSCode的默认终端设置成GitBash</h4><p>win系统，VSCode默认的终端不显示仓库分支名，不太好用。如果对此比较芥蒂的话，可以按下 <code>Ctrl+Shift+P</code>, 在用户设置中，将默认打开的终端修改成 <code>GitBash</code>。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1b379a61136b4d5b9d65df20d49a3b04~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.image"
+                      alt="image.png"
+                ></p>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="code"><pre><span class="line"><span class="attr">&quot;terminal.integrated.profiles.windows&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">       <span class="comment">// 命名中不能有空格</span></span><br><span class="line">       <span class="attr">&quot;GitBash&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">         <span class="comment">// 替换成实际的git安装路径</span></span><br><span class="line">         <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;C:/Program Files/Git/bin/bash.exe&quot;</span><span class="punctuation">,</span></span><br><span class="line">         <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">         <span class="attr">&quot;icon&quot;</span><span class="punctuation">:</span> <span class="string">&quot;terminal-bash&quot;</span></span><br><span class="line">       <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">       <span class="attr">&quot;PowerShell&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">         <span class="attr">&quot;source&quot;</span><span class="punctuation">:</span> <span class="string">&quot;PowerShell&quot;</span><span class="punctuation">,</span></span><br><span class="line">         <span class="attr">&quot;icon&quot;</span><span class="punctuation">:</span> <span class="string">&quot;terminal-powershell&quot;</span></span><br><span class="line">       <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">       <span class="attr">&quot;Command Prompt&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">         <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;$&#123;env:windir&#125;\\Sysnative\\cmd.exe&quot;</span><span class="punctuation">,</span> <span class="string">&quot;$&#123;env:windir&#125;\\System32\\cmd.exe&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">         <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">         <span class="attr">&quot;icon&quot;</span><span class="punctuation">:</span> <span class="string">&quot;terminal-cmd&quot;</span></span><br><span class="line">       <span class="punctuation">&#125;</span></span><br><span class="line">     <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;terminal.integrated.defaultProfile.windows&quot;</span><span class="punctuation">:</span> <span class="string">&quot;GitBash&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="3-Git仓库创建"><a href="#3-Git仓库创建" class="headerlink" title="3 Git仓库创建"></a>3 Git仓库创建</h3><p>分为两种情况,一种是没有仓库，一种是已有仓库，先看第一种，从零创建仓库，然后推送到远程</p>
+<h4 id="3-1-从零开始创建本地库，并推送到远程"><a href="#3-1-从零开始创建本地库，并推送到远程" class="headerlink" title="3.1 从零开始创建本地库，并推送到远程"></a>3.1 从零开始创建本地库，并推送到远程</h4><div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="code"><pre><span class="line">git init 目录名 新建一个本地仓库</span><br><span class="line">git <span class="keyword">add</span> README.md <span class="comment">-- 将README.md文件加入到仓库中</span></span><br><span class="line">git <span class="keyword">commit</span> <span class="operator">-</span>m &quot;提交描述&quot; <span class="comment">-- 将文件提交到本地仓库</span></span><br><span class="line">git remote <span class="keyword">add</span> origin &quot;远程仓库地址&quot; <span class="comment">-- 添加远程仓库，origin是一个远程主机的别名，名称可以随意取，一个远程主机上可以有多个远程仓库</span></span><br><span class="line">git push <span class="operator">-</span>u origin master <span class="comment">-- 将本地仓库push到远程主机origin的master分支，并将origin设为默认远程主机 -u参数设置默认远程主机，后续push代码，不写主机名的话，就是默认主机</span></span><br></pre></td></tr></table></figure></div>
+
+<h4 id="3-2-克隆已有仓库到本地"><a href="#3-2-克隆已有仓库到本地" class="headerlink" title="3.2 克隆已有仓库到本地"></a>3.2 克隆已有仓库到本地</h4><p>bash</p>
+<p>复制代码</p>
+<p><code>git clone /path/to/repository                                                             // 克隆本地库 git clone  git/ssh/http[s]/ftp[s]/file/rsync:username@ip/path/to/repository               // 克隆远端库</code></p>
+<p>git clone的本质就是把Git目录里面的内容拷贝过来，一般Git目录里有成千上万的各种对象（提交对象，树对象，二进制对象, tag对象……)，如果逐一复制的话，其效率就可想而知。如果<strong>通过git、ssh协议传输，服务器端会在传输前把需要传输的各种对象先打好包再进行传输</strong>；而http（s）协议则会反复请求要传输的不同对象。如果仓库里面的提交不多的话，前者和后者的效率相差不多；但若仓库里有很多提交的话，git、ssh协议进行传输效率更高。不过现在Git对http（s）协议传输Git仓库做了一定的优化，http（s）传输现在也能达到ssh协议的效率 。</p>
+<h3 id="4-git目录的组成"><a href="#4-git目录的组成" class="headerlink" title="4 .git目录的组成"></a>4 .git目录的组成</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7a9948af91b74e538d523c0c00284e9c~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.image"
+                     
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ada188bece3b4e7483955e0824cb240b~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.image"
+                     
+                ></p>
+<h3 id="5-Git存储区概念"><a href="#5-Git存储区概念" class="headerlink" title="5 Git存储区概念"></a>5 Git存储区概念</h3><p>如果你不清楚git add ,git commit ,git push都做了什么，那可能是因为你不知道git仓库存储区管理方式。git将本地的代码保存分为三个存储空间。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8d2ce34da35e4e44a57f2cf529d0e890~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.image"
+                     
+                ></p>
+<ul>
+<li>工作区：用户编辑保存项目文件的区域，用户直接可以接触的地方。</li>
+<li>暂存区: 默认情况下，保存的是最新的版本库中的所有文件，保存在.git文件夹下的index目录中；</li>
+<li>版本库：git 之所以快，是因为大多数提交都是对本地仓库而言的，不依赖网络也能进行版本管理，需要与远程仓库同步的时候才推送到远程仓库。</li>
+</ul>
+<p>如何证明存在暂存区： 在工作区修改一个文件,比如说是.env.dev，用下面的命令查看一下执行 <code>git add -A</code>前后，暂存区和版本库文件内容的变化，便可感知到暂存区的存在。</p>
+<p>sql</p>
+<p>复制代码</p>
+<p><code># 先查询暂存区文件的commit-id git ls-files -s -- filename # 再根据commit-id查看文件的内容 git cat-file -p commit-id</code></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f061d9d18a08408aab9f5b69c2ddf117~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.image"
+                      alt="image.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/907d73caf17246c6847a20a96b21de28~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.image"
+                      alt="image.png"
+                ></p>
+<p>查看本地仓库历史提交文件内容的方法是：</p>
+<p>git</p>
+<p>复制代码</p>
+<p> <code># 用git log查询commit-id  git log  # 查看commit-id对应的文件内容  git show commit-id:filename</code></p>
+<h3 id="6-分支操作"><a href="#6-分支操作" class="headerlink" title="6 分支操作"></a>6 分支操作</h3><p>分支是用来将特性开发绝缘开来的。在你创建仓库的时候，<em>master</em> 是“默认的”分支。在其它分支上进行开发，完成后再将它们合并到主分支上。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ad03ae3038db4c51b15a3e04df492e76~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.image"
+                     
+                ></p>
+<h4 id="6-1-查看分支"><a href="#6-1-查看分支" class="headerlink" title="6.1 查看分支"></a>6.1 查看分支</h4><p>复制代码</p>
+<p><code>git branch       查看本地所有的分支 git branch -r    查看远程所有分支 git branch -vv   查看本地分支和远程分支的追踪关系</code></p>
+<h4 id="6-2-切换分支"><a href="#6-2-切换分支" class="headerlink" title="6.2 切换分支"></a>6.2 切换分支</h4><p>复制代码</p>
+<p><code>git checkout 分支名</code></p>
+<h4 id="6-3-新建分支"><a href="#6-3-新建分支" class="headerlink" title="6.3 新建分支"></a>6.3 新建分支</h4><p>arduino</p>
+<p>复制代码</p>
+<p><code>git checkout -b  新分支名  // 从当前所处的本地分支下，创建一个新分支,分支名建议以 feature-YYYYMMDD-开发功能概述-姓名简称，这样的格式命名 git checkout -b  新分支名  远程主机名/远程分支名  // 从远程分支创建一个新分支，并追踪远程分支 git checkout -b  新分支名 commit-id  // 基于某次提交创建新分支</code></p>
+<h4 id="6-4-重命名分支"><a href="#6-4-重命名分支" class="headerlink" title="6.4 重命名分支"></a>6.4 重命名分支</h4><p>复制代码</p>
+<p><code>git branch -m 旧名称 新名称</code></p>
+<h4 id="6-5-删除分支"><a href="#6-5-删除分支" class="headerlink" title="6.5 删除分支"></a>6.5 删除分支</h4><p>arduino</p>
+<p>复制代码</p>
+<p><code>git branch -D 分支名 // 先切换到别的分支名下，删除本地分支 git push --delete 远程主机 远程分支名 // 删除远程分支</code></p>
+<h4 id="6-6-合并分支"><a href="#6-6-合并分支" class="headerlink" title="6.6 合并分支"></a>6.6 合并分支</h4><h5 id="6-6-1-git-merge"><a href="#6-6-1-git-merge" class="headerlink" title="6.6.1 git merge"></a>6.6.1 git merge</h5><p>sql</p>
+<p>复制代码</p>
+<p><code>git merge 当前分支要合并的分支名 -m &#39;合并备注&#39; git merge --no-ff  当前分支要合并的分支名 // 保留分支合并之前的历史提交记录 git merge --squash 当前分支要合并的分支名 // 将分支合并之前多次提交记录合并为一次</code></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fe04c1e1c03b42beba3fc903d9d9dcfa~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.image"
+                     
+                ></p>
+<h5 id="6-6-2-git-rebase"><a href="#6-6-2-git-rebase" class="headerlink" title="6.6.2 git rebase"></a>6.6.2 git rebase</h5><p>css</p>
+<p>复制代码</p>
+<p>  <code>git rebase -i  [startpoint]  [endpoint]</code></p>
+<p>其中 <code>-i</code>的意思是 <code>--interactive</code>，即弹出交互式的界面让用户编辑完成合并操作，<code>[startpoint]</code> <code>[endpoint]</code>则指定了一个编辑区间，如果不指定 <code>[endpoint]</code>，则该区间的终点默认是当前分支 <code>HEAD</code>所指向的 <code>commit</code></p>
+<p>以合并最近三次的提交记录为例：</p>
+<p>css</p>
+<p>复制代码</p>
+<p><code>git rebase -i HEAD~3</code></p>
+<p>弹出如下界面：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3600544848e445f38715d37406dde870~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.image"
+                     
+                ></p>
+<p>上面未被注释的部分列出的是我们本次rebase操作包含的所有提交，下面注释部分是git为我们提供的命令说明。每一个commit id 前面的 <code>pick</code>表示指令类型，git 为我们提供了以下几个命令：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pick</td>
+<td>保留该commit（缩写:p）</td>
+</tr>
+<tr>
+<td>reword</td>
+<td>保留该commit，但我需要修改该commit的注释（缩写:r）</td>
+</tr>
+<tr>
+<td>edit</td>
+<td>保留该commit, 但我要停下来修改该提交(不仅仅修改注释)（缩写:e）</td>
+</tr>
+<tr>
+<td>squash</td>
+<td>将该commit和前一个commit合并（缩写:s）</td>
+</tr>
+<tr>
+<td>fixup</td>
+<td>将该commit和前一个commit合并，但我不要保留该提交的注释信息（缩写:f）</td>
+</tr>
+<tr>
+<td>exec</td>
+<td>执行shell命令（缩写:x）</td>
+</tr>
+<tr>
+<td>drop</td>
+<td>我要丢弃该commit（缩写:d）</td>
+</tr>
+</tbody></table>
+<p>根据需要编辑完之后保存即可。</p>
+<h5 id="6-6-3-git-merge和git-rebase-合并分支的差异"><a href="#6-6-3-git-merge和git-rebase-合并分支的差异" class="headerlink" title="6.6.3 git merge和git rebase 合并分支的差异"></a>6.6.3 git merge和git rebase 合并分支的差异</h5><p>git rebase生成的历史记录线比较好看，merge比rebase有更多的历史记录，一方认为，合并分支不能仅仅为了好看，而要记录某个分支完整开发历史,一根直线的历史，很难分辨出开发历程和工作分配，如果开发过程跌跌撞撞，要进行如实记录，遍于后期改进。</p>
+<p>另一方认为，在开发过程中，如果某个分支功能比较多， commit量比较多时，使用rebase可以将当前分支提交记录整理过后再合并回主干，这样主干的演变轨迹线会看着比较美观，比较清晰。如果项目成员对git用得比较熟练，建议使用git rebase,否则建议使用git merge，便于查看提交历史。</p>
+<h4 id="6-7-合并分支冲突"><a href="#6-7-合并分支冲突" class="headerlink" title="6.7 合并分支冲突"></a>6.7 合并分支冲突</h4><p>冲突的原因是两个不同的开发者改了相同文件相同位置的代码,冲突提示,</p>
+<p>sql</p>
+<p>复制代码</p>
+<p><code>$ git merge conflict-branch   Auto-merging index.html CONFLICT (content): Merge conflict in index.html Automatic merge failed; fix conflicts and then commit the result.</code></p>
+<p>文件冲突，HEAD到&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;之间的是当前分支，&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;到&gt;&gt;&gt;&gt;&gt;&gt;&gt;之间的是冲突分支的内容，最后面是冲突分支名</p>
+<p>bash</p>
+<p>复制代码</p>
+<p><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code></p>
+<p>id&#x3D;”footer”&gt;contact : <a class="link"   href="https://link.juejin.cn/?target=mailto:email.support@github.com"  title="mailto:email.support@github.com">email.support@github.com <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>diff</p>
+<p>复制代码</p>
+<p><code>=======</code></p>
+<p>id&#x3D;”footer”&gt; please contact us at <a class="link"   href="https://link.juejin.cn/?target=mailto:support@github.com"  title="mailto:support@github.com">support@github.com <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>shell</p>
+<p>复制代码</p>
+<p><code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; conflict-branch</code></p>
+<p>合并冲突的原则是取最大公约数，共同的部分只保留一份，有差异的地方多方都保留 遇到冲突，难于解决，想回退到未合并之前的状态，使用</p>
+<p>sql</p>
+<p>复制代码</p>
+<p><code>git merge --abort</code></p>
+<p>解决完冲突文件之后，要重新添加文件到暂存区和本地版本库。</p>
+<p>另外一种场景是git pull最新的代码后，git stash pop引起冲突，想回退到最新没冲突之前的代码，使用指令</p>
+<p>css</p>
+<p>复制代码</p>
+<p><code>git reset --hard HEAD</code></p>
+<p>即可撤销 git stash pop 操作，将当前分支状态恢复。而该操作后，git stash 暂存区的记录也不会被删除，可通过 git stash show 查看.</p>
+<h4 id="6-8-追踪分支"><a href="#6-8-追踪分支" class="headerlink" title="6.8 追踪分支"></a>6.8 追踪分支</h4><p>追踪分支主要用来对比当前和远程分支的版本, 比如说origin&#x2F;master分支比master多提交了两次,意味着你需要将origin&#x2F;master的分支更新到master。</p>
+<p>ini</p>
+<p>复制代码</p>
+<p><code>git branch --set-upstream-to=远程主机名/远程分支名 本地分支名(可不写，不写表示当前分支)</code></p>
+<h3 id="7-设置忽略文件"><a href="#7-设置忽略文件" class="headerlink" title="7 设置忽略文件"></a>7 设置忽略文件</h3><h4 id="7-1-创建忽略文件"><a href="#7-1-创建忽略文件" class="headerlink" title="7.1 创建忽略文件"></a>7.1 创建忽略文件</h4><p>在仓库根目录下新建 <code>.gitignore</code>文件，文件名不可更改。<em>在Win系统下，不允许新建以 <code>.</code>开头的文件或文件夹，因此需要在Git Bash中新建</em>，命令如下：</p>
+<p>bash</p>
+<p>复制代码</p>
+<p><code>cd 本地代码仓库目录 vim .gitignore</code></p>
+<h4 id="7-2-忽略文件语法"><a href="#7-2-忽略文件语法" class="headerlink" title="7.2 忽略文件语法"></a>7.2 忽略文件语法</h4><p>ini</p>
+<p>复制代码</p>
+<p><code># 以#开头的行都是注释 # 忽略*.o和*.a文件（常见的编译过程中产生的文件）  *.[oa] # 忽略*.c和*.C文件，somefile.c除外，!用于在在某规则之后增加例外 *.[cC] !somefile.c # 忽略somepath文件和somepath目录 somepath # 只忽略somepath目录，不忽略somepath文件  somepath/ # 只忽略somepath文件，不忽略somepath目录  somepath  !somepath/  # 只忽略当前目录下的somepath文件和目录，子目录的somepath不在忽略范围内  /somepath</code></p>
+<p><strong>7.3 忽略文件的原则</strong></p>
+<ul>
+<li>忽略操作系统自动生成的文件，比如缩略图等；</li>
+<li>忽略自动测试生成的报告文件，忽略代码治疗扫描结果文件；</li>
+<li>忽略带有敏感信息的配置文件，比如存放口令的配置文件。</li>
+<li>忽略依赖安装包，忽略包管理工具生成的错误文件，忽略打包目录</li>
+</ul>
+<p><strong>7.4 忽略已经添加到远程仓库的文件 （</strong> <strong>如果文件重要，要提前备份）</strong></p>
+<ol>
+<li>删除文件追踪两种方法</li>
+</ol>
+<p>bash</p>
+<p>复制代码</p>
+<p><code>git rm –cached xxx git rm -r –cached</code></p>
+<ol start="2">
+<li>在.gitignored中添加需要过滤的文件</li>
+<li>commit, push提交.gitignore 配置这个后其他成员pull后working directory中对应的文件会删除，</li>
+</ol>
+<h3 id="8-工作空间操作"><a href="#8-工作空间操作" class="headerlink" title="8 工作空间操作"></a>8 工作空间操作</h3><h4 id="8-1-进度暂存"><a href="#8-1-进度暂存" class="headerlink" title="8.1 进度暂存"></a>8.1 进度暂存</h4><p>git 切换分支时,如果当前分支的功能没有开发好，不具备提交的条件, 如果不对这些内容做暂存处理，会被带入到切换之后的分支，给代码管理带来不必要的麻烦。这时就需要对尚未开发完成的进度进行存储操作。</p>
+<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="code"><pre><span class="line">git init 目录名 新建一个本地仓库</span><br><span class="line">git <span class="keyword">add</span> README.md <span class="comment">-- 将README.md文件加入到仓库中</span></span><br><span class="line">git <span class="keyword">commit</span> <span class="operator">-</span>m &quot;提交描述&quot; <span class="comment">-- 将文件提交到本地仓库</span></span><br><span class="line">git remote <span class="keyword">add</span> origin &quot;远程仓库地址&quot; <span class="comment">-- 添加远程仓库，origin是一个远程主机的别名，名称可以随意取，一个远程主机上可以有多个远程仓库</span></span><br><span class="line">git push <span class="operator">-</span>u origin master <span class="comment">-- 将本地仓库push到远程主机origin的master分支，并将origin设为默认远程主机 -u参数设置默认远程主机，后续push代码，不写主机名的话，就是默认主机</span></span><br></pre></td></tr></table></figure></div>
+
+<h4 id="8-2-将工作区的改动添加暂存区"><a href="#8-2-将工作区的改动添加暂存区" class="headerlink" title="8.2 将工作区的改动添加暂存区"></a>8.2 将工作区的改动添加暂存区</h4><div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="code"><pre><span class="line">git <span class="keyword">add</span> dir1          # 添加dir1这个目录，目录下的所有文件都被加入 </span><br><span class="line">git <span class="keyword">add</span> f1 f2         # 添加f1，f2文件 </span><br><span class="line">git <span class="keyword">add</span> <span class="operator">-</span>u            # <span class="operator">-</span>u是<span class="keyword">update</span>的缩写，只监听已经被加入的文件，包括修改和删除，不包括新增的文件和.gitignore中设置的忽略文件 添加到暂存区 </span><br><span class="line">git <span class="keyword">add</span> .             # 监听工作区的状态树，把工作区状态树的所有变化提交到暂存区， 包括新增的和修改的，不包括删除的文件和.gitignore中设置的忽略文件</span><br><span class="line">git <span class="keyword">add</span> <span class="operator">-</span>A            # 等于 git <span class="keyword">add</span> . <span class="operator">+</span> git <span class="keyword">add</span> <span class="operator">-</span>u 不包括.gitignore中要忽略的文件</span><br><span class="line">git <span class="keyword">add</span> <span class="operator">*</span>             # 等同git <span class="keyword">add</span> <span class="operator">-</span>A</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="8-3-将暂存区的文件提交到本地版本库"><a href="#8-3-将暂存区的文件提交到本地版本库" class="headerlink" title="8.3 将暂存区的文件提交到本地版本库"></a>8.3 将暂存区的文件提交到本地版本库</h4><div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="code"><pre><span class="line">git <span class="keyword">commit</span> <span class="operator">-</span>m    &quot;代码提交信息&quot;</span><br><span class="line">git <span class="keyword">commit</span> <span class="operator">-</span>a <span class="operator">-</span>m &quot;代码提交信息&quot;      # <span class="operator">-</span>a是把unstaged的文件变成staged（不包括新建的文件），然后<span class="keyword">commit</span></span><br><span class="line">git <span class="keyword">commit</span> <span class="comment">--amend                 # 修改提交的commit（没有push）</span></span><br><span class="line">git <span class="keyword">commit</span> <span class="comment">--amend -m &quot;comment&quot;    # 修改commit注释</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>8.4 将本地版本库推送到远程版本库</p>
+<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="code"><pre><span class="line">git push   <span class="operator">&lt;</span>远程主机名<span class="operator">&gt;</span><span class="operator">&lt;</span>本地分支名<span class="operator">&gt;</span>:<span class="operator">&lt;</span>远程分支名<span class="operator">&gt;</span></span><br><span class="line"></span><br><span class="line">git push <span class="operator">-</span>f <span class="operator">&lt;</span>远程主机名<span class="operator">&gt;</span><span class="operator">&lt;</span>本地分支名<span class="operator">&gt;</span>:<span class="operator">&lt;</span>远程分支名<span class="operator">&gt;</span><span class="operator">/</span><span class="operator">/</span> 强制推送</span><br></pre></td></tr></table></figure></div>
+
+
+<p>git push命令使用时常见的四种情况:</p>
+<table>
+<thead>
+<tr>
+<th>git push &lt;远程主机名&gt; &lt;本地分支名&gt;</th>
+<th>如果远程分支被省略，如上则表示将本地分支推送到与之存在追踪关系的远程分支（通常两者同名），如果该远程分支不存在，则会被新建</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>git push &lt;远程主机名&gt; :&lt;远程分支名&gt;</td>
+<td>如果省略本地分支名，则表示删除指定的远程分支，因为这等同于推送一个空的本地分支到远程分支，等同于 git push origin –delete 远程分支</td>
+</tr>
+<tr>
+<td>git push &lt;远程主机名&gt;</td>
+<td>如果当前分支与远程分支存在追踪关系，则本地分支和远程分支都可以省略，将当前分支推送到远程主机的对应分支</td>
+</tr>
+<tr>
+<td>git push</td>
+<td>如果当前分支只有一个远程分支，那么主机名都可以省略</td>
+</tr>
+</tbody></table>
+<h4 id="8-5-更新远程版本库的内容到本地版本库"><a href="#8-5-更新远程版本库的内容到本地版本库" class="headerlink" title="8.5 更新远程版本库的内容到本地版本库"></a>8.5 更新远程版本库的内容到本地版本库</h4><p>xml</p>
+<p>复制代码</p>
+<p><code>git fetch &lt;远程主机名&gt; &lt;远程分支名&gt;:&lt;本地分支名&gt; git pull   &lt;远程主机名&gt; &lt;远程分支名&gt;:&lt;本地分支名&gt;  // 等于git fetch+git merge</code></p>
+<p>git pull 常见的四种省略参数的情况，与git push比较类似。这里就不再赘述。git pull除了更新和自动合并当前代码之外，还有更新仓库所有分支的功能，注意是更新分支，不是更新分支上的代码。</p>
+<h4 id="8-6-git版本库回滚"><a href="#8-6-git版本库回滚" class="headerlink" title="8.6 git版本库回滚"></a>8.6 git版本库回滚</h4><p><strong>回退命令</strong></p>
+<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="code"><pre><span class="line">git checkout <span class="comment">--  #撤销工作区修改,省略filename,就是放弃工作区所有的改动</span></span><br><span class="line"></span><br><span class="line">git log <span class="comment">--pretty=oneline --abbrev-commit    #查看version_hash</span></span><br><span class="line"></span><br><span class="line">git reset version_hash <span class="comment">--[soft|mixed|hard]  #本地仓库回退到某个版本</span></span><br><span class="line"># <span class="comment">--soft       回退commit,stage和workspace仍旧保留改动</span></span><br><span class="line"># <span class="comment">--mixed      回退commit和stage，git reset默认的模式，只有工作区保留改动</span></span><br><span class="line"># <span class="comment">--hard       回退commit stage workspace 所有的改动都会丢失</span></span><br><span class="line"></span><br><span class="line">git push  <span class="operator">-</span>f 远程主机名 远程分支  #强制远程仓库回退到本地仓库版本</span><br></pre></td></tr></table></figure></div>
+
+<p>1.备份当前分支</p>
+<p>css</p>
+<p>复制代码</p>
+<p><code>git checkout -b the_branch_backup</code></p>
+<p>2.本地仓库版本回退</p>
+<p>ini</p>
+<p>复制代码</p>
+<p><code>git log --pretty=oneline --abbrev-commit #查看回退版本号 git reset --hard the_commit_id #本地仓库版本回退</code></p>
+<p>3.远程仓库回退</p>
+<p>arduino</p>
+<p>复制代码</p>
+<p><code>git push origin :the_branch //删除远程 the_branch</code></p>
+<p>4. 用回滚后的本地分支重新建立远程分支</p>
+<p>perl</p>
+<p>复制代码</p>
+<p><code>git push origin the_branch</code></p>
+<p>5.回退成功，删除本地备份分支</p>
+<p>复制代码</p>
+<p><code>git branch -D the_branch_backup</code></p>
+<p>Git的版本回退速度非常快，因为Git在内部有个指向当前版本的 <code>HEAD</code>指针，当你回退版本的时候，Git仅仅是把HEAD从指向回退版本</p>
+<p><strong>提交代码时提交错了分支的处理方法</strong></p>
+<div class="highlight-container" data-rel="Ini"><figure class="iseeu highlight ini"><table><tr><td class="code"><pre><span class="line">git log <span class="attr">--pretty</span>=<span class="literal">on</span>eline --abbrev-commit   <span class="comment">#查看 提交之前的commit_id</span></span><br><span class="line">git reset commit_id                        <span class="comment">#本地版本库回退</span></span><br><span class="line">git stash                                  <span class="comment">#暂存工作区和暂存区改动</span></span><br><span class="line">git checkout target_branch                 <span class="comment">#切换到正确的分支</span></span><br><span class="line">git stash pop                              <span class="comment">#恢复代码</span></span><br><span class="line">git add -A &amp;&amp; git commit - m &#x27;备注&#x27;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h4 id="git-revert和git-reset的区别"><a href="#git-revert和git-reset的区别" class="headerlink" title="git revert和git reset的区别"></a>git revert和git reset的区别</h4><p>(1) git reset只能针对本地操作，如果本地删除的内容已经推送到远程仓库，下一次更新时，被删除的内容会恢复。git revert可以对对远程服务器执行回退操作。下一次更新时，本地被删除的文件，不会恢复。</p>
+<p>(2) git revert会使提交记录增多,git revert是撤销指定版本的提交,会产生一个新的提交记录，git reset会使提交记录减少，git reset是回卷,会撤销指定版本之后的所有提交记录</p>
+<h4 id="git-revert和get-reset的后悔药"><a href="#git-revert和get-reset的后悔药" class="headerlink" title="git revert和get reset的后悔药"></a>git revert和get reset的后悔药</h4><p>revert后如果不想撤销了，看一下log，reset就可以回去了。</p>
+<p>perl</p>
+<p>复制代码</p>
+<p><code>git log                         # 查看commit_id git reset --hard commit_d       # 回退本地仓库,暂存区，工作区</code></p>
+<p>reset后后悔了怎么办，没有log了，怎么办？ 没关系，用git reflog命令可以查到更多commit_id：</p>
+<p>perl</p>
+<p>复制代码</p>
+<p><code>git reflog                       # 查看所有的命令操作记录，可以查询到git reset之前的commit_id git reset --hard commit_id       # 就可以回退会reset以前状态了。</code></p>
+<p>在git中，总是有后悔药可以吃的，git reflog  记录你操作的每一条指令，<code>HEAD</code>指向的版本是当前版本，Git允许我们使用命令 <code>git reset --hard commit_id</code>在历史版本之间穿梭。穿梭前，用 <code>git log</code>可以查看提交历史，以便确定要回退到哪个版本。要重返未来，用 <code>git reflog</code>查看命令历史，以便确定要回到未来的哪个版本。</p>
+<h4 id="8-7-git-提交指定分支"><a href="#8-7-git-提交指定分支" class="headerlink" title="8.7 git 提交指定分支"></a>8.7 git 提交指定分支</h4><p><code>git cherry-pick</code>命令的作用，就是在当前分支上，把其它分支的提交记录合并过来，这在两个版本刚开始说要一起上线，后来一个版本不上线了，而代码都搅合在发布分支，要撤销不上线的代码时，配合git reset指令，可以轻松实现发布分支不上线功能的代码下撤。</p>
+<p>css</p>
+<p>复制代码</p>
+<p> <code>a1 - a2 - a3 - a4       A          \            b1 - b2 - b3  B</code></p>
+<p>现在将b2提交应用到 <code>A</code>分支。</p>
+<p>ruby</p>
+<p>复制代码</p>
+<p><code># 切换到 A 分支 $ git checkout A # Cherry pick 操作 $ git cherry-pick b2</code></p>
+<p>操作完成以后，代码库就变成:</p>
+<p>css</p>
+<p>复制代码</p>
+<p> <code>a1 - a2 - a3 - a4 - b2     A          \            b1 - b2 - b3     B</code></p>
+<p>合并多个提交的操作指令是：</p>
+<p>xml</p>
+<p>复制代码</p>
+<p><code>git cherry-pick &lt;Hash-b1&gt; &lt;Hash-bN&gt;</code></p>
+<p>有时提交会遇到下面的异常情况 <code>The previous cherry-pick is now empty, possibly due to conflict resolution.</code>。 这是因为某次执行cherry-pick的时候，代码冲突了，解决完冲突之后，本地分支内容和cherry-pick之前相比没有变化。下一次再执行git cherry-pick的时候，由于此时还处于上次 <code>cherry-pick</code>，会提示该信息，表示由于解决冲突造成上一次cherry-pick内容是空的。直接使用 <code>git commit --allow-empty</code>允许空提交即可。</p>
+<div class="highlight-container" data-rel="Ini"><figure class="iseeu highlight ini"><table><tr><td class="code"><pre><span class="line">$  git cherry-pick fd327f76</span><br><span class="line">The previous cherry-pick is now empty, possibly due to conflict resolution.</span><br><span class="line">If you wish to commit it anyway, use:</span><br><span class="line"></span><br><span class="line">    git commit --allow-empty</span><br><span class="line"></span><br><span class="line">Otherwise, please use &#x27;git cherry-pick --skip&#x27;</span><br><span class="line">On branch release/drc-20230510</span><br><span class="line">You are currently cherry-picking commit fd327f76.</span><br><span class="line">  (all conflicts fixed: run &quot;git cherry-pick --continue&quot;)</span><br><span class="line">  (use &quot;git cherry-pick --skip&quot; to skip this patch)</span><br><span class="line">  (use &quot;git cherry-pick --abort&quot; to cancel the cherry-pick operation)</span><br><span class="line"></span><br><span class="line">nothing to commit, working tree clean</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="8-8-git删除"><a href="#8-8-git删除" class="headerlink" title="8.8 git删除"></a>8.8 git删除</h4><p>当我们需要删除暂存区或版本库上的文件, 同时工作区也不需要这个文件了, 可以使用git rm</p>
+<p>bash</p>
+<p>复制代码</p>
+<p><code>git rm file_path git commit -m &#39;delete somefile&#39; git push</code></p>
+<p>当我们需要删除暂存区或版本库的文件, 但本地又需要使用, 只是不希望这个文件被版本控制, 可以使用 git rm –cached</p>
+<p>sql</p>
+<p>复制代码</p>
+<p><code>git rm --cached file_path git commit -m &#39;delete remote somefile&#39; git push</code></p>
+<h4 id="8-9-git-log"><a href="#8-9-git-log" class="headerlink" title="8.9 git log"></a>8.9 git log</h4><p>推荐两条简写提交日志格式设置参数, lm-不显示提交记录汇总信息 lms-会现在提交记录汇总信息</p>
+<div class="highlight-container" data-rel="Ini"><figure class="iseeu highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 提交记录hash值是红色 提交描述是蓝色 提交日期是绿色 提交者是深蓝色</span></span><br><span class="line">git config --global alias.lm   &quot;log --no-merges --color <span class="attr">--date</span>=format:<span class="string">&#x27;%Y-%m-%d %H:%M:%S&#x27;</span>  --pretty=format:<span class="string">&#x27;%Cred%h %Creset- %Cblue%s %Cgreen(%cd) %C(bold blue)&lt;%an&gt;&#x27;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string"># 有提交记录汇总信息 提交记录hash值是红色 提交描述是蓝色 提交日期是绿色 提交者是深蓝色</span></span><br><span class="line"><span class="string">git config --global alias.lms  &quot;</span>log --<span class="literal">no</span>-merges --color --stat --date=format:<span class="string">&#x27;%Y-%m-%d %H:%M:%S&#x27;</span>  --pretty=format:<span class="string">&#x27;%Cred%h %Creset- %Cblue%s %Cgreen(%cd) %C(bold blue)&lt;%an&gt;&#x27;</span><span class="string">&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>命令浅析：</p>
+<div class="highlight-container" data-rel="Ini"><figure class="iseeu highlight ini"><table><tr><td class="code"><pre><span class="line">--no-merges：不显示分支合并日志</span><br><span class="line">%h:简短hash提交字符串</span><br><span class="line">%cd：提交日期</span><br><span class="line">%an:提交者</span><br><span class="line">%s:提交说明</span><br><span class="line">%C+颜色值+内容=给内容设置相应的颜色</span><br></pre></td></tr></table></figure></div>
+
+<p>看看这两种风格的注释是不是看着更优雅，更舒服 <img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b66e0c830cc14c6ca950d9084fa145df~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.image"
+                      alt="image.png"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/304fa117bf334d41b7049ae5cc34b260~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.image"
+                      alt="image.png"
+                ></p>
+<h3 id="9-Tag操作"><a href="#9-Tag操作" class="headerlink" title="9 Tag操作"></a>9 Tag操作</h3><p>在软件发布时创建标签，建一个发布版本的里程碑，是被推荐的。</p>
+<h4 id="9-1-tag创建"><a href="#9-1-tag创建" class="headerlink" title="9.1 tag创建"></a>9.1 tag创建</h4><p>perl</p>
+<p>复制代码</p>
+<div class="highlight-container" data-rel="Ini"><figure class="iseeu highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查询版本号</span></span><br><span class="line">git log <span class="attr">--pretty</span>=<span class="literal">on</span>eline --abbrev-commit</span><br><span class="line"></span><br><span class="line"><span class="comment">#创建tag</span></span><br><span class="line">git tag v1.0.0 1b2e1d63ff  -m &#x27;20210123 created&#x27;</span><br><span class="line"></span><br><span class="line"><span class="comment">#推送某个tag到远程仓库</span></span><br><span class="line">git push origin tag_name</span><br><span class="line"></span><br><span class="line"><span class="comment"># 一次性推送所有tag到远程服务器</span></span><br><span class="line">git push origin --tags</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="9-2-查看tag"><a href="#9-2-查看tag" class="headerlink" title="9.2 查看tag"></a>9.2 查看tag</h4><p>bash</p>
+<p>复制代码</p>
+<p><code># 查看某个tag记录 git show tag-name # 查看所有的tag git tag -ln  # 加-ln,查看tag简略信息</code></p>
+<h4 id="9-3-使用tag"><a href="#9-3-使用tag" class="headerlink" title="9.3 使用tag"></a>9.3 使用tag</h4><p>arduino</p>
+<p>复制代码</p>
+<p><code>// 取出打过tag的某个版本  git checkout -b branch_name tag_name</code></p>
+<h4 id="9-4-删除tag"><a href="#9-4-删除tag" class="headerlink" title="9.4 删除tag"></a>9.4 删除tag</h4><p>perl</p>
+<p>复制代码</p>
+<p><code>#删除本地的tag命令是 git tag -d tag-name #删除远程tag的命令是 git push origin --delete tag-name</code></p>
+<h3 id="10-gitlab-ci-yml配置参考示例"><a href="#10-gitlab-ci-yml配置参考示例" class="headerlink" title="10. .gitlab-ci.yml配置参考示例"></a>10. .gitlab-ci.yml配置参考示例</h3><div class="highlight-container" data-rel="Ini"><figure class="iseeu highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="comment">#镜像名称不是随意起的,要与docker配置名称对应</span></span><br><span class="line">image: node:lts</span><br><span class="line"></span><br><span class="line"><span class="comment"># 要缓存的东西</span></span><br><span class="line">cache:</span><br><span class="line">  key: $&#123;CI_COMMIT_REF_SLUG&#125;</span><br><span class="line">  paths:</span><br><span class="line">    - node_modules/</span><br><span class="line">    - .yarn-cache/</span><br><span class="line"></span><br><span class="line">variables:</span><br><span class="line">  APP_NAME: &#x27;alp-crm-ng&#x27;</span><br><span class="line"></span><br><span class="line">stages:</span><br><span class="line">  - format</span><br><span class="line"><span class="comment"># 预处理命令</span></span><br><span class="line">before_script:</span><br><span class="line">  - echo &quot;before_script&quot;</span><br><span class="line">  - node -v</span><br><span class="line">  - yarn -v</span><br><span class="line">  - yarn install --cache-folder .yarn-cache</span><br><span class="line"></span><br><span class="line">format:</span><br><span class="line">  stage: format</span><br><span class="line">  script:</span><br><span class="line">    - yarn format</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="11-git良好的使用习惯"><a href="#11-git良好的使用习惯" class="headerlink" title="11. git良好的使用习惯"></a>11. git良好的使用习惯</h3><ol>
+<li>每次提交前，检查一下所提交代码，是不是真正想修改的内容</li>
+<li>提交的粒度要细，频率要高，能极大减少代码冲突和重要改动无版本存储问题</li>
+<li>最好打通gitlab和钉钉，企业微信机器人代码提交通知，有人提交代码时，可以及时通知其它人更新，减少代码冲突的概率</li>
+<li>git的自动合并功能，有瑕疵，有时候文件的一些部分，合并是对的，一些部分，合并有冲突，最好逐个文件检查</li>
+<li>给项目配置husky工具，可以在提交代码的时候，对代码进行格式化，或者检查是否符合lint规则，如果不符，可以终止提交</li>
+<li>对于异常操作，一定要保留现场，查明原因，这样记忆更深刻。</li>
+<li>要看一下每条git命令的回显，看看是不是你要执行的操作, 有没有遗漏或报错或者执行终止的情况</li>
+<li>git减少代码冲突的做法</li>
+</ol>
+<ul>
+<li>分配任务时,尽量把任务拆分成独立的模块, 彼此之间的交集越少越好</li>
+<li>对于容易冲突的大文件，可以指定由一个人去修改</li>
+<li>将大文件拆分成多个子文件，将所有的子文件导入到一个index.ts索引文件中，使用的时候从索引文件中按需导出</li>
+<li>组内成员对预感会产生冲突的大文件，商量好修改顺序</li>
+</ul>
+<h3 id="12-git-常见报错"><a href="#12-git-常见报错" class="headerlink" title="12. git 常见报错"></a>12. git 常见报错</h3><ol>
+<li>error: pathspec ‘branch-xxx’ did not match any file(s) known to git</li>
+</ol>
+<p>git checkout 的分支不存在.git文件夹引起的</p>
+<ol start="2">
+<li>修改了文件的名称,将小写改成大写，提交到git远程仓库,发现文件名称没有改变，解决方法是</li>
+</ol>
+<p>bash</p>
+<p>复制代码</p>
+<p><code>git rm -r --cached .</code></p>
+<p> 3. 合并代码，推荐用如下命令，比git merge更好用。</p>
+<p>复制代码</p>
+<p><code>git pull origin remote_need_merge_branch_name</code></p>
+<ol start="4">
+<li>在VSCode的git命令窗口提交代码时，报如下错误：</li>
+</ol>
+<div class="highlight-container" data-rel="Ini"><figure class="iseeu highlight ini"><table><tr><td class="code"><pre><span class="line"> git pull --tags origin hotfix/20210707-hide-fund-rate</span><br><span class="line">From gitlab.tengmoney.com:tengmoney-fe/caizhi-minipro-cscb</span><br><span class="line"> * branch            hotfix/20210707-hide-fund-rate -&gt; FETCH_HEAD</span><br><span class="line"> ! <span class="section">[rejected]</span>        v1.2.0     -&gt; v1.2.0  (would clobber existing tag)</span><br></pre></td></tr></table></figure></div>
+
+<p>这是因为tag被删除了，又新建了一个一模一样的tag,解决方案是，强制刷新一下远程的所有tag</p>
+<p>sql</p>
+<p>复制代码</p>
+<p><code>git fetch --tags -f</code></p>
+<p> 5. .gitignore文件中设置的忽略文件不生效的解决方法，.gitignore中设置的忽略规则，是针对未添加到版本管理的文件而言，对已添加到版本库的文件不生效。解决方法是将所有文件先从版本库删除，再重新添加一遍。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5cddb131a5d74c828235787d2c88916d~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.image"
+                     
+                ></p>
+<p>bash</p>
+<p>复制代码</p>
+<p><code>git rm  --cached 要删除的xxx文件夹或文件</code></p>
+<p> 6. Could not retrieve the pipeline status.  —- 无法检索流水线状态。</p>
+<p>这种报错是因为没有流水线文件所致。</p>
+<ol start="7">
+<li>error: cannot lock ref ‘xxx’: ‘xxx’ exists; cannot create ‘xxx’</li>
+</ol>
+<p>    </p>
+<p>原因：git工程的.git&#x2F;refs目录下跟踪的某些git分支，在pull时候发现与远程仓库对应的分支refs不同，因此导致 git pull 失败</p>
+<ol>
+<li>A同事 <code>$ git push -force</code>了test这个分支，导致远程仓库的分支被覆盖，而你本地的refs则会与远程仓库的分支不一致，产生问题；</li>
+<li>git分支是不区分大小写，有人删除了远程仓库的分支又重新创建一个同样名字的分支同样也会产生问题。</li>
+</ol>
+<p> 解决方法：</p>
+<ol>
+<li>使用git命令  <code>git update-ref -d xxx  删除本地.git下的xxx文件</code></li>
+<li>如果不行,强制更新 git pull -p 强制更新</li>
+</ol>
+<p>8. The following untracked working tree files would be overwritten by merge,</p>
+<p>原因: 远端将某个文件加入了仓库，本地把这个文件从仓库中移除了，就会出现这样的提示。一般是同名文件，刚开始命名不规范，比如说文件名首字母大写，后面改成了小写文件。window系统不区分文件大小写，就出现这个问题。</p>
+<p>解决方法:</p>
+<p>方法1</p>
+<p>bash</p>
+<p>复制代码</p>
+<p><code>git rm --cached filename git push origin remote_branch</code></p>
+<p>方法2</p>
+<p>arduino</p>
+<p>复制代码</p>
+<p><code>git clean  -d  -fx &quot;src/httpTypes&quot;</code></p>
+<p>其中  d—-删除未被添加到git的路径中的文件   x—删除忽略文件  对git来说不识别的文件   f —强制运行 ，强制合并的思路走不通。<br>9. git默认对文件名称大小写不敏感，如果将原来小驼峰命名的文件改成了大驼峰，会发现本地git的改动文件提示，没有任何修改。解决方法就是执行</p>
+<p>arduino</p>
+<p>复制代码</p>
+<p><code>git config core.ignorecase false</code></p>
+<p>删除之前小驼峰文件的操作指令是</p>
+<p>bash</p>
+<p>复制代码</p>
+<p><code>git mv readme.md README.md</code></p>
+<ol start="10">
+<li>已删除的文件，并且本地已暂存，无法在暂存状态下复原删除的文件，将删除文件从暂存仓库中移除，才能恢复删除的文件。</li>
+<li>错误： error dst refspec matches more than one  ，原因： tags与branch中有重名的分支</li>
+</ol>
+<p>解决方法：删除重名分支 12. git checkout -b 创建新分支时,报fatal: cannot lock ref xxx</p>
+<p>git 把分支信息存放在 <code>.git/refs/heads</code> 目录中，每个分支是一个文件。如果.git&#x2F;refs&#x2F;heads下存在同名目录，就会报这个错误。 <img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/71310da007ea4cdcb406ed0e5ed96d5f~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.image"
+                      alt="image.png"
+                ></p>
+<p>解决方法： 从一开始创建分支时，如果要创建一个以xxx为前缀的开发名,就要创建成xxx&#x2F;test1这种格式。 <img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c9530d4db3844ed98596a8f95141803a~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.image"
+                      alt="image.png"
+                ></p>
+<ol start="12">
+<li>WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED! 警告：远程主机标识已更改！</li>
+</ol>
+<p>造成这个错误的原因是github服务器升级，导致客户端known_hosts过期。原因如下：<br>第一次使用SSH连接时，会生成一个认证，储存在客户端的known_hosts中，远程git服务器更新时，本地known_hosts过期。 解决方法： 查看github最新的地址</p>
+<p>javascript</p>
+<p>复制代码</p>
+<p><code>ssh-keygen -l -f ~/.ssh/known_hosts</code></p>
+<p>刷新本地known_hosts保存的github地址</p>
+<p>复制代码</p>
+<p><code>ssh-keygen -R 上一步查出的github地址</code></p>
+<p>然后就可以正常使用命令了</p>
+<ol start="13">
+<li>GitHub Error: Key already in use解决方法? 你有多个github账号，你本地的ssh-key，已经被某个账号所使用，要查看被哪个github账号所使用，用下面的命令</li>
+</ol>
+<p>typescript</p>
+<p>复制代码</p>
+<p><code>ssh -T -ai ~/.ssh/id_rsa git@github.com</code></p>
+]]></content>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>前端性能优化</title>
+    <url>/2023/06/16/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<h1 id="前端性能优化总结"><a href="#前端性能优化总结" class="headerlink" title="前端性能优化总结"></a>前端性能优化总结</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>性能优化总结：减少请求次数、减小资源大小、提高响应和加载速度、优化资源加载时机、优化加载方式。</strong></p>
+<h2 id="性能分类"><a href="#性能分类" class="headerlink" title="性能分类"></a>性能分类</h2><p>对前端工程性能的优化，我觉得可以分为两类：</p>
+<ul>
+<li>站在用户视角的主观的可感知的性能。</li>
+<li>站在开发者视角的可客观度量的性能。</li>
+</ul>
+<h3 id="感知性能"><a href="#感知性能" class="headerlink" title="感知性能"></a>感知性能</h3><p>对于用户来说，用户的感知性能才是最重要的，简单讲，就是让用户感觉你的网站访问很快，并且感知性能没有衡量标准。</p>
+<p>不过，凡事总有例外，如果一个页面的加载时间就会很长，我们也可以通过一些方式让用户觉得没有那么慢。</p>
+<p><strong>总之一句话，你的页面可以做的不快，但是你可以让你的用户觉得你很快。</strong></p>
+<h3 id="客观性能"><a href="#客观性能" class="headerlink" title="客观性能"></a>客观性能</h3><p>对于开发者来说，性能指标是可以客观度量的，我们可以通过一些手段来优化 Web 性能，使这些度量指标达到开发者设定的标准。</p>
+<p>客观性能是指，从用户输入url开始，到下载、解析和执行所有资源以及最终绘制的整个过程的时间度量。</p>
+<p><strong>性能指标是个很复杂的标准，后续我会单独整理出一篇文章介绍性能指标。</strong></p>
+<h2 id="构建优化"><a href="#构建优化" class="headerlink" title="构建优化"></a>构建优化</h2><p>*<em>由于我司使用的是 <em>@vue&#x2F;cli</em>，所以许多webpack配置脚手架已经帮你完成了，我就不叙述了，这里只讲基于 <em>@vue&#x2F;cli</em> 做的一些优化配置</em>*</p>
+<h3 id="gzip-压缩"><a href="#gzip-压缩" class="headerlink" title="gzip 压缩"></a>gzip 压缩</h3><p><code>gzip</code> 压缩效率非常高，通常可以达到 70% 的压缩率，也就是说，如果你的网页有 30K，压缩之后就变成了 9K 左右。</p>
+<p><code>//npm i -D compression-webpack-plugin configureWebpack: config =&gt; &#123;   const CompressionPlugin = require(&#39;compression-webpack-plugin&#39;)   config.plugins.push(new CompressionPlugin()) &#125;</code></p>
+<h3 id="去除-console-log"><a href="#去除-console-log" class="headerlink" title="去除 console.log"></a>去除 console.log</h3><p>线上项目自然不应该被看到控制台的打印日志,所以我们需要将 <code>console.log</code> 都去除掉。</p>
+<p>复制代码</p>
+<p><code>//npm i -D terser-webpack-plugin   configureWebpack: config =&gt; &#123;    const TerserPlugin = require(&#39;terser-webpack-plugin&#39;)    config.optimization.minimizer.push(      new TerserPlugin(&#123;        extractComments: false,        terserOptions: &#123; compress: &#123; drop_console: true &#125; &#125;,      &#125;)    )  &#125;</code></p>
+<h3 id="去除-SourceMap"><a href="#去除-SourceMap" class="headerlink" title="去除 SourceMap"></a>去除 SourceMap</h3><p>由于打包后的文件经过了压缩、合并、混淆、babel编译后的代码不利于定位分析bug。</p>
+<p>复制代码</p>
+<p><code>module.exports = &#123;   productionSourceMap: false, &#125;</code></p>
+<h3 id="CDN减少打包体积"><a href="#CDN减少打包体积" class="headerlink" title="CDN减少打包体积"></a>CDN减少打包体积</h3><p>使用 <code>cdn</code> 文件来减少工程到打包体积，也可以按需加载。</p>
+<p>在 &#x2F;public&#x2F;index.html 中引入需要的js和css文件</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/20/172d09f7c0c4afeb~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"
+                     
+                ></p>
+<p>去掉 package.json 中对于 vue、element-ui 等相关资源的依赖</p>
+<p>src&#x2F;main.js ，去掉 vue、element-ui 等相关资源的 import 和 vue.use 这些语句</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/20/172d09f7c39e62c5~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"
+                     
+                ></p>
+<p>配置externals。由于使用 Vue Cli 3 默认配置，新建出来的项目没有了 build 目录，首先得在项目根目录下，新建 vue.config.js 文件，里面添加以下代码：</p>
+<p>复制代码</p>
+<p><code>module.exports = &#123;     configureWebpack:&#123;         externals:&#123;             &#39;Vue&#39;: &#39;Vue&#39;,             &#39;element-ui&#39;: &#39;element-ui&#39;,             &#39;clipboard&#39;:&#39;VueClipboard&#39;         &#125;     &#125; &#125;</code></p>
+<h3 id="预渲染"><a href="#预渲染" class="headerlink" title="预渲染"></a>预渲染</h3><blockquote>
+<p>渲染方式分为三种，客户端渲染，服务端渲染，预渲染。</p>
+</blockquote>
+<p>我们默认的开发方式是通过客户端渲染，但是客户端渲染页面内容，关键链路较长，首屏渲染会有一定延迟，并且对 <em>SEO</em> 非常不友好，对于C端的产品来说，是不可行的。</p>
+<p>所以很多公司都会通过服务端渲染（SSR）或是 预渲染的方式来解决这两点问题，由于公司技术栈原因，我们采用预渲染的方式来做优化。</p>
+<blockquote>
+<p>什么是预渲染？</p>
+</blockquote>
+<p>简单说，就是将浏览器解析 <code>javascript</code> 动态渲染页面的这部分工作，在打包阶段就完成了，（只构建了静态数据）换个说法在构建过程中，<code>webpack</code> 通过使用 <code>prerender-spa-plugin</code> 插件生成静态结构的 <code>html</code>。</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// npm i -D prerender-spa-plugin</span></span><br><span class="line"> <span class="attr">configureWebpack</span>: <span class="function"><span class="params">config</span> =&gt;</span> &#123;</span><br><span class="line">   <span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line">   <span class="keyword">const</span> <span class="title class_">PrerenderSPAPlugin</span> = <span class="built_in">require</span>(<span class="string">&#x27;prerender-spa-plugin&#x27;</span>)</span><br><span class="line">   config.<span class="property">plugins</span>.<span class="title function_">push</span>(</span><br><span class="line">     <span class="keyword">new</span> <span class="title class_">PrerenderSPAPlugin</span>(&#123;</span><br><span class="line">       <span class="attr">staticDir</span>: path.<span class="title function_">join</span>(__dirname, <span class="string">&#x27;dist&#x27;</span>),</span><br><span class="line">       <span class="attr">routes</span>: [<span class="string">&#x27;/&#x27;</span>],</span><br><span class="line">       <span class="attr">minify</span>: &#123;</span><br><span class="line">         <span class="attr">collapseBooleanAttributes</span>: <span class="literal">true</span>,</span><br><span class="line">         <span class="attr">collapseWhitespace</span>: <span class="literal">true</span>,</span><br><span class="line">         <span class="attr">keepClosingSlash</span>: <span class="literal">true</span>,</span><br><span class="line">         <span class="attr">decodeEntities</span>: <span class="literal">true</span>,</span><br><span class="line">         <span class="attr">sortAttributes</span>: <span class="literal">true</span>,</span><br><span class="line">       &#125;,</span><br><span class="line">       <span class="attr">renderer</span>: <span class="keyword">new</span> <span class="title class_">PrerenderSPAPlugin</span>.<span class="title class_">PuppeteerRenderer</span>(&#123;</span><br><span class="line">         <span class="attr">renderAfterDocumentEvent</span>: <span class="string">&#x27;render-event&#x27;</span>,</span><br><span class="line">         <span class="attr">renderAfterTime</span>: <span class="number">5000</span>,</span><br><span class="line">         <span class="comment">// headless: false,</span></span><br><span class="line">       &#125;),</span><br><span class="line">     &#125;)</span><br><span class="line">   )</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">作者：海洋里的魔鬼鱼</span><br><span class="line">链接：<span class="attr">https</span>:<span class="comment">//juejin.cn/post/6844904195707895816</span></span><br><span class="line">来源：稀土掘金</span><br><span class="line">著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>注意：路由模式必须为 <code>history</code> ，如果不设置 <code>history</code> 模式，也能运行和生成文件，每个 <code>index.html</code> 文件的内容都会是一样的。</strong></p>
+<h2 id="网络资源优化"><a href="#网络资源优化" class="headerlink" title="网络资源优化"></a>网络资源优化</h2><h3 id="Service-Worker"><a href="#Service-Worker" class="headerlink" title="Service Worker"></a>Service Worker</h3><p><code>ServiceWorker</code> 是运行在浏览器后台进程里的一段 JS，它可以做许多事情，比如拦截客户端的请求、向客户端发送消息、向服务器发起请求等等，其中最重要的作用之一就是离线资源缓存。</p>
+<p><code>ServiceWorker</code> 拥有对缓存流程丰富灵活的控制能力，当页面请求到 <code>ServiceWorker</code> 时，<code>ServiceWorker</code> 同时请求缓存和网络，把缓存的内容直接给用户，而后覆盖缓存，我司已经使用了 <code>ServiceWorker</code> 替换 <code>HTTP缓存策略</code>。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/17/172c164286ca09bd~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"
+                     
+                ></p>
+<p><strong>注意：需要HTTPS才可以使用 ServiceWorker</strong></p>
+<h3 id="http缓存"><a href="#http缓存" class="headerlink" title="http缓存"></a>http缓存</h3><p>HTTP 缓存一般分为两类：<strong>强缓存（也称本地缓存）</strong> 和 <strong>协商缓存（也称304缓存）</strong>。</p>
+<p>普通刷新会启用 <strong>协商缓存</strong>，忽略 <strong>强缓存</strong>。只有在地址栏或收藏夹输入网址、通过链接引用资源等情况下，浏览器才会启用 <strong>强缓存</strong>。</p>
+<h4 id="强缓存（200）"><a href="#强缓存（200）" class="headerlink" title="强缓存（200）"></a>强缓存（200）</h4><p>本地缓存是最快速的一种缓存方式，只要资源还在缓存有效期内，浏览器就会直接在本地读取，不会请求服务端。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/17/172c060f69f1c1f4~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"
+                     
+                ></p>
+<h4 id="协商缓存（304）"><a href="#协商缓存（304）" class="headerlink" title="协商缓存（304）"></a>协商缓存（304）</h4><p>协商缓存，顾名思义是经过浏览器与服务器之间协商过之后，在决定是否读取本地缓存，如果服务器通知浏览器可以读取本地缓存，会返回304状态码，并且协商过程很简单，只会发送头信息，不会发送响应体。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/17/172c061440cf617f~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"
+                     
+                ></p>
+<h4 id="缓存位置"><a href="#缓存位置" class="headerlink" title="缓存位置"></a>缓存位置</h4><p>缓存位置一般分为：Memory Cache（内存缓存）和 Disk Cache（硬盘缓存）</p>
+<p>内存缓存：读取快、持续时间短、容量小</p>
+<p>硬盘缓存：读取慢、持续时间长、容量大</p>
+<h4 id="缓存优先级"><a href="#缓存优先级" class="headerlink" title="缓存优先级"></a>缓存优先级</h4><p>Service Worker -&gt; Memory Cache -&gt; Disk Cache -&gt; Push Cache</p>
+<h3 id="HTTP2"><a href="#HTTP2" class="headerlink" title="HTTP2"></a>HTTP2</h3><p>HTTP2 四个新特性：</p>
+<ul>
+<li>多路复用，无需多个TCP连接，因为其允许在单一的HTTP2连接上发起多重请求，因此可以不用依赖建立多个TCP连接。</li>
+<li>二进制分帧，将所有要传输的消息采用二进制编码，并且会将信息分割为更小的消息块。</li>
+<li>头部压缩，用HPACK技术压缩头部，减小报文大小</li>
+<li>服务端推送，服务端可以在客户端发起请求前发送数据，换句话说，服务端可以对客户端的一个请求发送多个相应，并且资源可以正常缓存。</li>
+</ul>
+<p>复制代码</p>
+<p><code>server &#123;     listen 443 ssl http2; &#125;</code></p>
+<p><strong>注意：使用 http2 的前提是必须是 https。</strong></p>
+<h3 id="资源预加载"><a href="#资源预加载" class="headerlink" title="资源预加载"></a>资源预加载</h3><p>简单说，提前加载资源，当用户需要查看时可直接从本地缓存中渲染。</p>
+<p><strong>总结：对当前页面需要的资源，使用 preload 进行预加载，对其它页面需要的资源进行 prefetch 预加载。</strong></p>
+<h4 id="preload"><a href="#preload" class="headerlink" title="preload"></a>preload</h4><p><code>preload</code> 页面加载的过程中，在浏览器开始主体渲染之前加载。</p>
+<p>复制代码</p>
+<p><code>&lt;!-- 对sty1e.cs5和 index.js进行pre1oad预加载 --&gt; &lt;link rel=&quot;preload&quot; href=&quot;style.css&quot; as=&quot;style&quot;&gt; &lt;link rel=&quot;preload&quot; href=&quot;index.js&quot; as=&quot;script&quot;&gt;</code></p>
+<h4 id="prefetch"><a href="#prefetch" class="headerlink" title="prefetch"></a>prefetch</h4><p><code>prefetch</code> 页面加载完成后，利用空闲时间提前加载。</p>
+<p>复制代码</p>
+<p><code>&lt;!--对资源进行 prefetch预加载--&gt; &lt;link rel=&quot;prefetch&quot; href=&quot;next.css&quot;&gt; &lt;link rel=&quot;prefetch&quot; href=&quot;next.js&quot;&gt;</code></p>
+<p>注意：<code>vue-cli</code> 默认开启 <code>prefetch</code> ，可在 <code>vue.config.js</code> 中全局禁用 <code>prefetch</code> ，再针对指定模块开启。</p>
+<p>复制代码</p>
+<p><code>chainWebpack: config =&gt; &#123;   config.plugins.delete(&#39;prefetch&#39;) &#125;</code></p>
+<h4 id="dns-prefetch"><a href="#dns-prefetch" class="headerlink" title="dns-prefetch"></a>dns-prefetch</h4><p>页面加载完成后，利用空闲时间提前加载。</p>
+<p>复制代码</p>
+<p><code>&lt;link rel=&quot;dns-prefetch&quot; href=&quot;//example.com&quot;&gt;</code></p>
+<h3 id="异步无阻塞加载JS"><a href="#异步无阻塞加载JS" class="headerlink" title="异步无阻塞加载JS"></a>异步无阻塞加载JS</h3><p>异步加载 js 文件，并且不会阻塞页面的渲染。</p>
+<p>先来看一个普通的 script 标签解析过程。</p>
+<p>复制代码</p>
+<p><code>&lt;script src=&quot;a.js&quot; &gt;&lt;/script&gt;</code></p>
+<ol>
+<li>停止解析 document.</li>
+<li>请求 a.js</li>
+<li>执行 a.js 中的脚本</li>
+<li>继续解析 document</li>
+</ol>
+<h4 id="defer"><a href="#defer" class="headerlink" title="defer"></a>defer</h4><p>复制代码</p>
+<p><code>&lt;script src=&quot;d.js&quot; defer&gt;&lt;/script&gt; &lt;script src=&quot;e.js&quot; defer&gt;&lt;/script&gt;</code></p>
+<ol>
+<li>不阻止解析 document， 并行下载 d.js, e.js</li>
+<li>即使下载完 d.js, e.js 仍继续解析 document</li>
+<li>按照页面中出现的顺序，在其他同步脚本执行后，DOMContentLoaded 事件前 依次执行 d.js, e.js。</li>
+</ol>
+<h4 id="async"><a href="#async" class="headerlink" title="async"></a>async</h4><p>复制代码</p>
+<p><code>&lt;script src=&quot;b.js&quot; async&gt;&lt;/script&gt; &lt;script src=&quot;c.js&quot; async&gt;&lt;/script&gt;</code></p>
+<ol>
+<li>不阻止解析 document, 并行下载 b.js, c.js</li>
+<li>当脚本下载完后立即执行。（两者执行顺序不确定，执行阶段不确定，可能在 DOMContentLoaded 事件前或者后 ）</li>
+</ol>
+<h3 id="webp"><a href="#webp" class="headerlink" title="webp"></a>webp</h3><p><strong>webp</strong> 是一种新的图片格式，它的体积只有只有 <strong>JPEG</strong> 的2&#x2F;3，将图片资源大量换成 <strong>webp</strong> 格式可以加快请求的速度。</p>
+<p>我司的图片资源大部分都放在阿里的 <strong>OSS</strong> 上，并且阿里提供了接口，可以在线将 <strong>png&#x2F;jpeg</strong> 转为 <strong>webp</strong> 格式。</p>
+<p><strong>注意：webp 格式在浏览器兼容上还有一定的问题，所以需要判断浏览器是否支持 webp 格式哦。</strong></p>
+<p>复制代码</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">check_webp_feature</span>(<span class="params">feature, callback</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> kTestImages = &#123;</span><br><span class="line">    <span class="attr">lossy</span>: <span class="string">&#x27;UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA&#x27;</span>,</span><br><span class="line">    <span class="attr">lossless</span>: <span class="string">&#x27;UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==&#x27;</span>,</span><br><span class="line">    <span class="attr">alpha</span>:</span><br><span class="line">      <span class="string">&#x27;UklGRkoAAABXRUJQVlA4WAoAAAAQAAAAAAAAAAAAQUxQSAwAAAARBxAR/Q9ERP8DAABWUDggGAAAABQBAJ0BKgEAAQAAAP4AAA3AAP7mtQAAAA==&#x27;</span>,</span><br><span class="line">    <span class="attr">animation</span>:</span><br><span class="line">      <span class="string">&#x27;UklGRlIAAABXRUJQVlA4WAoAAAASAAAAAAAAAAAAQU5JTQYAAAD/////AABBTk1GJgAAAAAAAAAAAAAAAAAAAGQAAABWUDhMDQAAAC8AAAAQBxAREYiI/gcA&#x27;</span>,</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">var</span> img = <span class="keyword">new</span> <span class="title class_">Image</span>();</span><br><span class="line">  img.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> result = img.<span class="property">width</span> &gt; <span class="number">0</span> &amp;&amp; img.<span class="property">height</span> &gt; <span class="number">0</span>;</span><br><span class="line">    <span class="title function_">callback</span>(feature, result);</span><br><span class="line">  &#125;;</span><br><span class="line">  img.<span class="property">onerror</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">callback</span>(feature, <span class="literal">false</span>);</span><br><span class="line">  &#125;;</span><br><span class="line">  img.<span class="property">src</span> = <span class="string">&#x27;data:image/webp;base64,&#x27;</span> + kTestImages[feature];</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>感知性能优化</p>
+<p>loading 加载</p>
+<p>江湖人称菊花图 ….</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/19/172cb8dda68617da~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"
+                     
+                ></p>
+<p>不过，现在对于加载的设计体验有了比菊花加载体验更棒的方法 。</p>
+<h3 id="骨架屏"><a href="#骨架屏" class="headerlink" title="骨架屏"></a>骨架屏</h3><p>骨架屏可以带来更好的用户体验，有很强的加载感。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/19/172cb8fa40b13ff3~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"
+                     
+                ></p>
+<p>可惜的是，<strong>ElementUI</strong> 并没有提供骨架屏组件，反观 <strong>Antd</strong> ，真香…</p>
+<h3 id="对比体验"><a href="#对比体验" class="headerlink" title="对比体验"></a>对比体验</h3><p>第一个为骨架屏，第二个为菊花图，第三个为无优化，可以看到相比于传统的菊花图会在感官上觉得内容出现的流畅而不突兀，体验更加优良。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/6/20/172cf7463cd4cf71~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png"
+                      alt="img"
+                ></p>
+<link rel="stylesheet" href="main.css"/>
+]]></content>
+      <tags>
+        <tag>JavaScript</tag>
+        <tag>前端</tag>
+        <tag>Gulp</tag>
+        <tag>浏览器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2023/06/20/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a class="link"   href="https://hexo.io/" >Hexo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>! This is your very first post. Check <a class="link"   href="https://hexo.io/docs/" >documentation <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> for more info. If you get any problems when using Hexo, you can find the answer in <a class="link"   href="https://hexo.io/docs/troubleshooting.html" >troubleshooting <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> or you can ask me on <a class="link"   href="https://github.com/hexojs/hexo/issues" >GitHub <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link"   href="https://hexo.io/docs/writing.html" >Writing <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link"   href="https://hexo.io/docs/server.html" >Server <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link"   href="https://hexo.io/docs/generating.html" >Generating <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link"   href="https://hexo.io/docs/one-command-deployment.html" >Deployment <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>如何快速融入团队</title>
+    <url>/2023/06/16/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E8%9E%8D%E5%85%A5%E5%9B%A2%E9%98%9F/</url>
+    <content><![CDATA[<h1 id="工作拆解"><a href="#工作拆解" class="headerlink" title="工作拆解"></a>工作拆解</h1><p>对于一个企业而言，核心组成要素无非就是<strong>人、业务、技术、文化</strong>。因此工作的开展可以从这四个角度出发，并逐层拆解，力争从陌生变熟悉。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/image/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E8%9E%8D%E5%85%A5%E5%9B%A2%E9%98%9F/1692160019922.png"
+                      alt="1692160019922"
+                ></p>
+<h2 id="人"><a href="#人" class="headerlink" title="人"></a>人</h2><p><strong>目标：熟悉组织结构、人员分工，并与未来可能有合作关系的人建立关系。</strong></p>
+<p>行动：</p>
+<ol>
+<li>了解组织结构</li>
+<li>了解人员分工</li>
+<li>建立关系</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/image/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E8%9E%8D%E5%85%A5%E5%9B%A2%E9%98%9F/1692160106522.png"
+                      alt="1692160106522"
+                ></p>
+<h2 id="业务"><a href="#业务" class="headerlink" title="业务"></a>业务</h2><p><strong>目标：熟悉业务，对产品定位、用户人群、行业现状有一定了解。</strong></p>
+<p>行动：</p>
+<ol>
+<li>了解业务现状</li>
+<li>梳理业务流程</li>
+<li>理解用户</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/image/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E8%9E%8D%E5%85%A5%E5%9B%A2%E9%98%9F/1692160173570.png"
+                      alt="1692160173570"
+                ></p>
+<h2 id="技术"><a href="#技术" class="headerlink" title="技术"></a>技术</h2><p>目标：熟悉团队技术现状，方便后续开展工作</p>
+<blockquote>
+<p>切勿一上来就高谈阔论、方法论，推翻重构，对过往保持敬畏。</p>
+</blockquote>
+<p>行动：</p>
+<ol>
+<li>熟悉架构，包括系统架构、领域模型、代码结构</li>
+<li>了解研发流程，从一个小需求入手，掌握相关的流程和权限</li>
+<li>先小后大，以点破面。从小点突破，比如性能优化，先拿到业绩，再准备大的规划。</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/image/%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E8%9E%8D%E5%85%A5%E5%9B%A2%E9%98%9F/1692160200401.png"
+                      alt="1692160200401"
+                ></p>
+<h2 id="文化"><a href="#文化" class="headerlink" title="文化"></a>文化</h2><p><strong>目标：熟悉企业文化</strong></p>
+<p>行动：</p>
+<ol>
+<li>理解公司使命</li>
+<li>理解业务愿景</li>
+<li>理解公司价值观，并做到知行合一</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1405150e3f5e488da728b95cc3cd5d30~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image.png"
+                ></p>
+<h1 id="心态调整"><a href="#心态调整" class="headerlink" title="心态调整"></a>心态调整</h1><blockquote>
+<p>不着急，不害怕，不要脸 — 冯唐《冯唐成事心法》</p>
+</blockquote>
+<p>上一章讲的是「术」，是方法论，但光会「术」有可能会碰壁，因为心态问题。</p>
+<ul>
+<li><strong>不着急</strong>：每个人到一个新团队，总想着快速理解业务、快速出成绩，来证明自己的价值。可以理解，但是不必着急，多给自己和他人一些时间，做好规划，安排好时间尽力而为即可，切勿急功近利。</li>
+<li><strong>不害怕</strong>：不害怕事情失败，培养<a class="link"   href="https://link.juejin.cn/?target=https://wiki.mbalib.com/wiki/%25E6%2588%2590%25E9%2595%25BF%25E5%259E%258B%25E6%2580%259D%25E7%25BB%25B4"  title="https://wiki.mbalib.com/wiki/%E6%88%90%E9%95%BF%E5%9E%8B%E6%80%9D%E7%BB%B4">成长性思维 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，相信明天的自己比今天更优秀。记住一句话：成功是一时的，成长是一辈子的；还有一句老话：失败是成功之母。大不了，重头再来。</li>
+<li><strong>不要脸</strong>：不怕丢脸、不怕打脸。很多人进入新团队，不敢发言不敢提问，殊不知这是露脸的好机会，可以让更多人更快地认识自己。还有一种是怕向年龄或资历更小的人提问，觉得丢人，选择自己研究导致浪费时间。孔子有云 “不耻下问”，改变心态，对方对某块事物的理解就是比自己熟，不害怕提问，帮助自己更快地获取知识并融入团队。</li>
+</ul>
+<p>以上，不着急、不害怕、不要脸，改变心态，方能更好的融入。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>融入团队是需要<strong>刻意练习</strong>的。</p>
+<p>先调整心态，不着急、不害怕、不要脸。</p>
+<p>再逐步拆解工作，按人、业务、技术、文化四个方向开展。</p>
+<p>最后会发现，「融入团队」这件事，其实和做题一样简单，唯一的变量，也就是人而已。</p>
+]]></content>
+      <tags>
+        <tag>人际交往</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>封装ECharts</title>
+    <url>/2023/06/16/%E5%B0%81%E8%A3%85%20ECharts/</url>
+    <content><![CDATA[<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">|--src</span><br><span class="line">    |--components     // 组件</span><br><span class="line">        |--echarts    // echats 封装目录</span><br><span class="line">            |--echarts-types.ts    // 一些类型</span><br><span class="line">            |--library.ts          // 为 echats 增加的一些功能</span><br><span class="line">            |--useECharts.ts       // 主函数</span><br><span class="line">  </span><br><span class="line">        |--EChartsComponents</span><br><span class="line">            |--a-echarts.vue      // 组件使用</span><br><span class="line">  </span><br><span class="line">|--App.vue</span><br></pre></td></tr></table></figure></div>
+
+
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="library-ts"><a href="#library-ts" class="headerlink" title="library.ts"></a>library.ts</h3><p>在 <em><strong>library.ts</strong></em> 中集中引入，挂载 echarts 需要用到的组件和功能</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> echarts <span class="keyword">from</span> <span class="string">&#x27;echarts/core&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">        <span class="title class_">BarChart</span>,</span><br><span class="line">        <span class="title class_">LineChart</span>,</span><br><span class="line">        <span class="title class_">PieChart</span>,</span><br><span class="line">        <span class="title class_">MapChart</span>,</span><br><span class="line">        <span class="title class_">PictorialBarChart</span>,</span><br><span class="line">        <span class="title class_">RadarChart</span>,</span><br><span class="line">        <span class="title class_">ScatterChart</span></span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">&#x27;echarts/charts&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">        <span class="title class_">TitleComponent</span>,</span><br><span class="line">        <span class="title class_">TooltipComponent</span>,</span><br><span class="line">        <span class="title class_">GridComponent</span>,</span><br><span class="line">        <span class="title class_">PolarComponent</span>,</span><br><span class="line">        <span class="title class_">AriaComponent</span>,</span><br><span class="line">        <span class="title class_">ParallelComponent</span>,</span><br><span class="line">        <span class="title class_">LegendComponent</span>,</span><br><span class="line">        <span class="title class_">RadarComponent</span>,</span><br><span class="line">        <span class="title class_">ToolboxComponent</span>,</span><br><span class="line">        <span class="title class_">DataZoomComponent</span>,</span><br><span class="line">        <span class="title class_">VisualMapComponent</span>,</span><br><span class="line">        <span class="title class_">TimelineComponent</span>,</span><br><span class="line">        <span class="title class_">CalendarComponent</span>,</span><br><span class="line">        <span class="title class_">GraphicComponent</span></span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">&#x27;echarts/components&#x27;</span>;</span><br><span class="line"></span><br><span class="line">echarts.<span class="title function_">use</span>([</span><br><span class="line">        <span class="title class_">LegendComponent</span>,</span><br><span class="line">        <span class="title class_">TitleComponent</span>,</span><br><span class="line">        <span class="title class_">TooltipComponent</span>,</span><br><span class="line">        <span class="title class_">GridComponent</span>,</span><br><span class="line">        <span class="title class_">PolarComponent</span>,</span><br><span class="line">        <span class="title class_">AriaComponent</span>,</span><br><span class="line">        <span class="title class_">ParallelComponent</span>,</span><br><span class="line">        <span class="title class_">BarChart</span>,</span><br><span class="line">        <span class="title class_">LineChart</span>,</span><br><span class="line">        <span class="title class_">PieChart</span>,</span><br><span class="line">        <span class="title class_">MapChart</span>,</span><br><span class="line">        <span class="title class_">RadarChart</span>,</span><br><span class="line">        <span class="title class_">PictorialBarChart</span>,</span><br><span class="line">        <span class="title class_">RadarComponent</span>,</span><br><span class="line">        <span class="title class_">ToolboxComponent</span>,</span><br><span class="line">        <span class="title class_">DataZoomComponent</span>,</span><br><span class="line">        <span class="title class_">VisualMapComponent</span>,</span><br><span class="line">        <span class="title class_">TimelineComponent</span>,</span><br><span class="line">        <span class="title class_">CalendarComponent</span>,</span><br><span class="line">        <span class="title class_">GraphicComponent</span>,</span><br><span class="line">        <span class="title class_">ScatterChart</span></span><br><span class="line">]);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> echarts;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="echarts-types-ts"><a href="#echarts-types-ts" class="headerlink" title="echarts-types.ts"></a>echarts-types.ts</h3><p>一些需要使用的类型，在这里规范</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">export enum RenderType &#123;</span><br><span class="line">        SVGRenderer = &#x27;SVGRenderer&#x27;,</span><br><span class="line">        CanvasRenderer = &#x27;SVGRenderer&#x27;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export enum ThemeType &#123;</span><br><span class="line">        Light = &#x27;light&#x27;,</span><br><span class="line">        Default = &#x27;default&#x27;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>引入需要使用的功能模块，EChartsOption 类型在使用时容易报红，这里暂时用 any</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; onMounted, onUnmounted, <span class="title class_">Ref</span>, unref &#125; <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> echarts <span class="keyword">from</span> <span class="string">&quot;./library&quot;</span>;</span><br><span class="line"><span class="comment">// import type &#123; EChartsOption &#125; from &#x27;echarts&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">SVGRenderer</span>, <span class="title class_">CanvasRenderer</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;echarts/renderers&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">RenderType</span>, <span class="title class_">ThemeType</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;./echarts-types&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">useECharts</span>(<span class="params">elparams: Ref&lt;HTMLDivElement&gt; | HTMLDivElement, autoUpdateSize: boolean = <span class="literal">false</span>, render: RenderType = RenderType.SVGRenderer, theme = ThemeType.Default</span>) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 渲染模式 </span></span><br><span class="line">        echarts.<span class="title function_">use</span>(render === <span class="title class_">RenderType</span>.<span class="property">SVGRenderer</span> ? <span class="title class_">SVGRenderer</span> : <span class="title class_">CanvasRenderer</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// echats实例</span></span><br><span class="line">        <span class="keyword">let</span> <span class="attr">echartsInstance</span>: echarts.<span class="property">ECharts</span> | <span class="literal">null</span> = <span class="literal">null</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 初始化 echats实例</span></span><br><span class="line">        <span class="keyword">function</span> <span class="title function_">initCharts</span>(<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">const</span> el = <span class="title function_">unref</span>(elparams)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (!el) <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">                echartsInstance = echarts.<span class="title function_">init</span>(el, theme)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 配置</span></span><br><span class="line">        <span class="keyword">function</span> <span class="title function_">setOption</span>(<span class="params">option: any</span>) &#123;</span><br><span class="line"></span><br><span class="line">                <span class="title function_">showLoading</span>()</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (!echartsInstance) <span class="title function_">initCharts</span>()</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (!echartsInstance) <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">                echartsInstance.<span class="title function_">setOption</span>(option)</span><br><span class="line"></span><br><span class="line">                <span class="title function_">hideLoading</span>()</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取 echats实例</span></span><br><span class="line">        <span class="keyword">function</span> <span class="title function_">getInstance</span>(<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (!echartsInstance) <span class="title function_">initCharts</span>()</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> echartsInstance</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 更新大小</span></span><br><span class="line">        <span class="keyword">function</span> <span class="title function_">onResize</span>(<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">                echartsInstance?.<span class="title function_">resize</span>()</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 监听元素大小变化</span></span><br><span class="line">        <span class="keyword">function</span> <span class="title function_">watchEl</span>(<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (animation) <span class="title function_">unref</span>(elparams).<span class="property">style</span>.<span class="property">transition</span> = <span class="string">&#x27;width 1s, height 1s&#x27;</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">const</span> resizeObserve = <span class="keyword">new</span> <span class="title class_">ResizeObserver</span>(<span class="function">() =&gt;</span> <span class="title function_">onResize</span>())</span><br><span class="line"></span><br><span class="line">                resizeObserve.<span class="title function_">observe</span>(<span class="title function_">unref</span>(elparams))</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 显示加载状态</span></span><br><span class="line">        <span class="keyword">function</span> <span class="title function_">showLoading</span>(<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (!echartsInstance) <span class="title function_">initCharts</span>()</span><br><span class="line"></span><br><span class="line">                echartsInstance?.<span class="title function_">showLoading</span>()</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 隐藏加载状态</span></span><br><span class="line">        <span class="keyword">function</span> <span class="title function_">hideLoading</span>(<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (!echartsInstance) <span class="title function_">initCharts</span>()</span><br><span class="line"></span><br><span class="line">                echartsInstance?.<span class="title function_">hideLoading</span>()</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 生命钩子——组件挂载完成</span></span><br><span class="line">        <span class="title function_">onMounted</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">                <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;resize&#x27;</span>, onResize)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (autoUpdateSize) <span class="title function_">watchEl</span>()</span><br><span class="line"></span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 生命钩子——页面销毁</span></span><br><span class="line">        <span class="title function_">onUnmounted</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">                <span class="variable language_">window</span>.<span class="title function_">removeEventListener</span>(<span class="string">&#x27;resize&#x27;</span>, onResize)</span><br><span class="line"></span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> &#123; setOptions, getInstance &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="在组件中的使用"><a href="#在组件中的使用" class="headerlink" title="在组件中的使用"></a>在组件中的使用</h2><h3 id="a-echarts-vue-使用，我们现在只需要去找一些-option-就可以实现不同的图表了"><a href="#a-echarts-vue-使用，我们现在只需要去找一些-option-就可以实现不同的图表了" class="headerlink" title="a-echarts.vue 使用，我们现在只需要去找一些 option 就可以实现不同的图表了"></a>a-echarts.vue 使用，我们现在只需要去找一些 option 就可以实现不同的图表了</h3><p>这个还不错的网站，有很多示例 <a class="link"   href="https://link.juejin.cn/?target=http://ppchart.com/%23/"  title="http://ppchart.com/#/">PPChart <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 我们随便拿一个来试试吧，</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/25b4df462742475a9056fa2bdd8bd4c6~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image.png"
+                ></p>
+<p>把配置代码复制到下面，就可以看见效果了</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">        <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;chart&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;MyEcharts&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script lang=&quot;ts&quot; setup&gt;</span><br><span class="line">import &#123; onMounted, Ref, ref &#125; from &quot;vue&quot;;</span><br><span class="line">import echarts from &quot;../echarts/library&quot;;</span><br><span class="line"></span><br><span class="line">//获取echarts实例</span><br><span class="line">const MyEcharts = ref&lt;HTMLDivElement | null&gt;(null)</span><br><span class="line"></span><br><span class="line">const &#123; setOption, getInstance &#125; = useECharts(MyEcharts as Ref&lt;HTMLDivElement&gt;, false, true)</span><br><span class="line"></span><br><span class="line">onMounted(() =&gt; &#123;</span><br><span class="line">  </span><br><span class="line">        setOption(option);</span><br><span class="line"></span><br><span class="line">        const echartsInstance = getInstance()</span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="App-vue"><a href="#App-vue" class="headerlink" title="App.vue"></a>App.vue</h3><div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">echarts</span>&gt;</span><span class="tag">&lt;/<span class="name">echarts</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span> <span class="attr">lang</span>=<span class="string">&quot;ts&quot;</span>&gt;</span><span class="language-javascript"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">import</span> echarts <span class="keyword">from</span> <span class="string">&#x27;./components/EchartsComponents/a-echarts.vue&#x27;</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">style</span> <span class="attr">scoped</span>&gt;</span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span></span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b7c2129846244c44926763d144c8e992~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image.png"
+                ></p>
+]]></content>
+      <tags>
+        <tag>ECharts</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>组件命名规范</title>
+    <url>/2023/06/16/%E7%BB%84%E4%BB%B6%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83/</url>
+    <content><![CDATA[<h2 id="主流命名规范"><a href="#主流命名规范" class="headerlink" title="主流命名规范"></a>主流命名规范</h2><h3 id="1-OOCSS"><a href="#1-OOCSS" class="headerlink" title="1. OOCSS"></a>1. OOCSS</h3><p>Object-Oriented CSS，示例：</p>
+<p><code>&lt;div class=&quot;sizeOne bgBlue solidGray&quot;&gt;&lt;/div&gt; .sizeOne &#123;width: 25%;&#125; .bgBlue &#123;background:blue;&#125; .solidGray &#123;border: 1px solid #ccc;&#125;</code></p>
+<p>oocss的核心原则：</p>
+<ol>
+<li>独立的结构和样式</li>
+<li>独立的容器和内容</li>
+</ol>
+<p>其优点：</p>
+<ul>
+<li>减少CSS代码</li>
+<li>具有清洁的HTML标记，有语义的类名，逻辑性强的层次关系</li>
+<li>语义标记，有助于SEO</li>
+<li>更好的页面优化，更快的加载时间（因为有很多组件重用）</li>
+<li>可扩展的标记和CSS样式，有更多的组件可以放到库中，而不影响其他的组件</li>
+<li>能轻松构造新的页面布局，或制作新的页面风格</li>
+</ul>
+<p>其缺陷：</p>
+<ul>
+<li>OOCSS适合真正的大型网站开发，因为大型网站用到的可重用性组件特别的多，如果运用在小型项目中可能见不到什么成效。所以用不用OOCSS应该根据你的项目来决定。</li>
+<li>如果没用巧妙的使用，创建组件可能对于你来说是一堆没用的东西，成为一烂摊子，给你的维护带来意想不到的杯具，说不定还是个维护的噩梦。</li>
+<li>最好给每一个组件备写一份说明文档，有助于调用与维护<br>参考链接：<a class="link"   href="https://link.juejin.cn/?target=https://www.w3cplus.com/css/oocss-concept"  title="https://www.w3cplus.com/css/oocss-concept">www.w3cplus.com/css/oocss-c… <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ul>
+<h3 id="2-SMACSS"><a href="#2-SMACSS" class="headerlink" title="2. SMACSS"></a>2. SMACSS</h3><p>参考链接：<a class="link"   href="https://link.juejin.cn/?target=https://medium.com/@savemuse/smacss-%25E6%2595%2599%25E5%25AD%25B8-c94e858aa762"  title="https://medium.com/@savemuse/smacss-%E6%95%99%E5%AD%B8-c94e858aa762">medium.com&#x2F;@savemuse&#x2F;s… <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="3-SUITCSS"><a href="#3-SUITCSS" class="headerlink" title="3. SUITCSS"></a>3. SUITCSS</h3><p>参考链接：<a class="link"   href="https://link.juejin.cn/?target=https://w3ctech.com/topic/1939"  title="https://w3ctech.com/topic/1939">w3ctech.com&#x2F;topic&#x2F;1939 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="4-Atomic"><a href="#4-Atomic" class="headerlink" title="4. Atomic"></a>4. Atomic</h3><p>参考链接：<a class="link"   href="https://link.juejin.cn/?target=https://www.geeksforgeeks.org/introduction-to-atomic-css-with-examples/"  title="https://www.geeksforgeeks.org/introduction-to-atomic-css-with-examples/">www.geeksforgeeks.org/introductio… <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="5-BEM"><a href="#5-BEM" class="headerlink" title="5. BEM"></a>5. BEM</h3><p>参考链接：<a class="link"   href="https://link.juejin.cn/?target=http://getbem.com/introduction/"  title="http://getbem.com/introduction/">getbem.com&#x2F;introductio… <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>Block、Element、Modifier，BEM是我目前在使用的命名方式，也是本文重点要讲述的，基于BEM的规范制定了一套符合业务、框架以及开发模式的规范。首先简单介绍下BEM，详细内容可查看参考链接。</p>
+<p><strong>Block</strong></p>
+<p>独立的有意义的实体，eg：</p>
+<p><code>header</code>、<code>container</code>、<code>menu</code>、<code>checkbox</code>、<code>input</code>、<code>footer</code>等，它是在整个页面布局时，划分的单独模块。</p>
+<p><strong>Element</strong></p>
+<p>元素，是Block下的子元素，其没有独立的意义，但属于Block的一部分，eg：</p>
+<p><code>menu item</code>、 <code>list item</code>、 <code>checkbox caption</code>、 <code>header title</code></p>
+<p><strong>Modifier</strong></p>
+<p>Block或Element上的标志标识，用来改变外观、状态、行为、标记等，eg：</p>
+<p><code>disabled</code>、 <code>highlighted</code>、 <code>checked</code>、 <code>fixed</code>、 <code>size big</code>、 <code>color yellow</code></p>
+<h2 id="我的命名规范"><a href="#我的命名规范" class="headerlink" title="我的命名规范"></a>我的命名规范</h2><p>基于BEM，我进行了扩展，我认为项目名也可以是一个Block，而项目旗下的页面，组件都可以视为block下的元素element，项目是独立的实体，组件、页面是其的一部分，page、component等是他的标识modifier，该概念完全符合BEM的设计理念，也比较适用于我们项目开发。</p>
+<p>在我们使用vue、react或者angular开发业务时，势必会涉及到这几个概念：</p>
+<ol>
+<li>页面级组件；</li>
+<li>全局通用组件；</li>
+<li>模块内通用组件；</li>
+<li>页面独有的组件；</li>
+</ol>
+<p>针对这些场景，我们如何命名区分，达到通过类名就能大致了解组件的用途，甚至自注释，同时也能有效的防止命名重复导致的样式冲突呢？</p>
+<h3 id="1-页面级组件"><a href="#1-页面级组件" class="headerlink" title="1. 页面级组件"></a>1. 页面级组件</h3><p>路由所对应的页面，也称为页面级组件。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;页面&gt;--page 必要时候 可以带上项目缩写：&lt;项目缩写&gt;__&lt;页面&gt;--page eg： 外层页面目录：my-order; 页面：我的订单; 命名：my-orders--page;</span><br></pre></td></tr></table></figure></div>
+
+<ol start="2">
+<li>全局通用组件</li>
+</ol>
+<p>全局通用的组件，适用于不同模块下的多个页面。</p>
+<p><code>&lt;组件名&gt;--global-component 必要时，为了防止命名冲突可以带上项目简写： &lt;项目缩写&gt;__&lt;组件名&gt;--global-component eg: 全局组件存放路径：src/components 通用组件：按钮组件 命名：button--global-component</code></p>
+<h3 id="3-模块内通用组件"><a href="#3-模块内通用组件" class="headerlink" title="3. 模块内通用组件"></a>3. 模块内通用组件</h3><p>模块内多个页面都要用到的组件，我将它称之为模块内通用组件，通常存放在一级路由文件夹下的components下，例如&#x2F;src&#x2F;pages&#x2F;personal-center&#x2F;components。</p>
+<p><code>&lt;组件名&gt;--module-component 必要时，为了防止命名冲突可以带上项目简写：&lt;项目缩写&gt;__&lt;组件名&gt;--module-component eg： 存放路径：/src/pages/personal-center/components 模块内通用组件：弹窗组件 命名：modal--module-component</code></p>
+<h3 id="4-页面独有组件"><a href="#4-页面独有组件" class="headerlink" title="4. 页面独有组件"></a>4. 页面独有组件</h3><p>仅适用于当前页面的组件，我将它称之为页面独有组件。</p>
+<p><code>&lt;组件名&gt;--component eg： 存放路径：/src/pages/personal-center/my-order/components模块内通用组件：标签组件 命名：tag--component</code></p>
+<p>modifier新增四种：page、global-component、module-component、component。</p>
+<p>组件名、模块名、页面名称都使用 ‘-’ 连接，eg：record-item、award-detail。</p>
+<p>以上的命名都是针对组件容器的class命名，那么组件内部的子元素该如何命名呢？</p>
+<p>1. 统一前缀命名</p>
+<p>所有子元素都使用统一的前缀去命名，eg：button__text。</p>
+<p>该方法的缺点，如果组件名称长，看着不优雅，很多重复，若使用变量定义，eg：</p>
+<p><code>const classPrefix = &#39;tpc_datetime-picker&#39; &lt;div className=&#123;`$&#123;classPrefix&#125;__title`&#125; /&gt;</code></p>
+<p>这么写的话，总感觉也不是特别优雅，但也还在接受范围。</p>
+<p>2. 使用组件名前缀</p>
+<p>使用组件名称，去除项目简写，eg：button–disabled</p>
+<p>针对子元素内部的命名，eg：button__label–warning</p>
+<p>在组件开发过程中，建议可以将前缀使用变量保存，css也是。如此去命名你的class，既明了，又能防止命名重复导致样式冲突，让每一个类变得更有意义。可能有的前端比较反感命名长，喜欢用简短的命名，可以适当调整类名的前缀，让class不显得过长，如此命名，防重复，类名可读性很高，会让你的业务更清晰，html的结构层次也更明了。</p>
+]]></content>
+      <tags>
+        <tag>vue</tag>
+        <tag>命名规范</tag>
+        <tag>组件</tag>
+      </tags>
+  </entry>
+</search>
